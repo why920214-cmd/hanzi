@@ -29,6 +29,12 @@
     padding:var(--s3) var(--s4);border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:5}
   .logo{display:flex;align-items:baseline;gap:8px}
   .logo b{font-family:var(--f-han);font-size:26px;font-weight:400;line-height:1;color:var(--seal)}
+  .hr{display:flex;align-items:center;gap:var(--s2)}
+  .modes{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .modes button{font-family:var(--f-ui);font-size:var(--t-sm);padding:6px 12px;border:0;
+    background:transparent;color:var(--ink-2);cursor:pointer;white-space:nowrap;line-height:1.3}
+  .modes button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+  .modes .cn{display:block;font-size:9px;opacity:.7;letter-spacing:.06em}
   .logo span{font-size:var(--t-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
   select{font-family:var(--f-ui);font-size:var(--t-sm);padding:5px 6px;border:1px solid var(--line);
     background:var(--paper);color:var(--ink-2);border-radius:3px;max-width:112px}
@@ -166,10 +172,16 @@
 <div class="app">
   <header class="bar">
     <div class="logo"><b>字</b><span>Hanzi</span></div>
-    <select id="lang" aria-label="Language">
-      <option value="en">English</option><option value="zh">简体中文</option>
-      <option value="ja">日本語</option><option value="es">Español</option>
-    </select>
+    <div class="hr">
+      <div class="modes" id="modes" role="tablist" style="display:none">
+        <button id="m-char" role="tab" aria-selected="true"></button>
+        <button id="m-word" role="tab" aria-selected="false"></button>
+      </div>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="zh">简体中文</option>
+        <option value="ja">日本語</option><option value="es">Español</option>
+      </select>
+    </div>
   </header>
 
   <main>
@@ -206,38 +218,38 @@
 <script>
 (function(){
 var L={
-en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find the two parts that make it. Six tries.',ibtn:'Start',
+en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find the two parts that make it. Two games: build a character, or build a word.',ibtn:'Start',
  build:'Build this',check:'Check',next:'Next',share:'Share',copied:'Copied',hintb:'Hint',hint:'Hint',
  kg:'both right',kh:'one right',kn:'neither',nu:'new',coll:'Found',chap:'Chapter',lore:'Where it comes from',oracle:'oracle-bone forms, ~1200 BC',
- kchar:'Characters',kword:'Words',diff:['easy','medium','hard'],tchar:'two parts → one character',tword:'two characters → one word',
+ kchar:'Characters',kword:'Words',diff:['easy','medium','hard'],mchar:'Characters',mword:'Words',tchar2:'parts → character',tword2:'characters → word',mDone:'{m} — all done.',tryOther:'Try the other one',tchar:'two parts → one character',tword:'two characters → one word',
  chDone:'Chapter complete',chNext:'Next chapter',
  dtitle:'You solved all 41.',dbody:'That is the whole prototype. The real thing keeps going — the same few dozen parts build thousands of actual Chinese words.',
  solvedIt:'Solved in {n}',failedIt:'Out of tries',
- foot:'Prototype · 5 chapters · 41 puzzles'},
-zh:{ih:'中文的词，是拼出来的。',ip:'我们给你一个意思，你找出组成它的两块。六次机会。',ibtn:'开始',
+ foot:'Prototype · 14 character puzzles · 27 word puzzles'},
+zh:{ih:'中文的词，是拼出来的。',ip:'我们给你一个意思，你找出组成它的两块。两种玩法：猜字，或者猜词。',ibtn:'开始',
  build:'拼出这个',check:'检查',next:'下一题',share:'分享',copied:'已复制',hintb:'提示',hint:'提示',
  kg:'两块都对',kh:'对了一块',kn:'都不对',nu:'新',coll:'已解开',chap:'第',lore:'字源',oracle:'甲骨文字形 · 约公元前 1200 年',
- kchar:'造字',kword:'造词',diff:['简单','中等','高级'],tchar:'两个部件 → 一个字',tword:'两个字 → 一个词',
+ kchar:'造字',kword:'造词',diff:['简单','中等','高级'],mchar:'猜字',mword:'猜词',tchar2:'部件 → 字',tword2:'字 → 词',mDone:'{m} 全部完成。',tryOther:'去玩另一种',tchar:'两个部件 → 一个字',tword:'两个字 → 一个词',
  chDone:'本章完成',chNext:'下一章',
  dtitle:'41 题全解开了。',dbody:'这个原型里就这些。真正的版本会一直下去 —— 同样这几十块，能拼出几千个真实存在的中文词。',
  solvedIt:'{n} 次猜中',failedIt:'次数用完了',
- foot:'原型 · 5 章 · 41 题'},
-ja:{ih:'中国語の単語は、部品でできている。',ip:'意味を出します。それを作る2つの部品を当ててください。6回まで。',ibtn:'開始',
+ foot:'原型 · 猜字 14 题 · 猜词 27 题'},
+ja:{ih:'中国語の単語は、部品でできている。',ip:'意味を出します。それを作る2つを当ててください。漢字を作る／単語を作るの2種類。',ibtn:'開始',
  build:'これを作る',check:'判定',next:'次へ',share:'シェア',copied:'コピーしました',hintb:'ヒント',hint:'ヒント',
  kg:'両方正解',kh:'1つ正解',kn:'不正解',nu:'新',coll:'解けた',chap:'第',lore:'字源',oracle:'甲骨文の字形・紀元前1200年頃',
- kchar:'漢字づくり',kword:'単語づくり',diff:['やさしい','ふつう','難しい'],tchar:'部品2つ → 漢字1つ',tword:'漢字2つ → 単語1つ',
+ kchar:'漢字づくり',kword:'単語づくり',diff:['やさしい','ふつう','難しい'],mchar:'漢字',mword:'単語',tchar2:'部品 → 漢字',tword2:'漢字 → 単語',mDone:'{m} 全クリア。',tryOther:'もう一方へ',tchar:'部品2つ → 漢字1つ',tword:'漢字2つ → 単語1つ',
  chDone:'章クリア',chNext:'次の章',
  dtitle:'41問すべて解きました。',dbody:'プロトタイプはここまで。本番版はさらに続きます。',
  solvedIt:'{n}回で正解',failedIt:'回数切れ',
- foot:'プロトタイプ · 5章 · 41問'},
-es:{ih:'Las palabras chinas se construyen con piezas.',ip:'Te damos un significado. Encuentra las dos piezas que lo forman. Seis intentos.',ibtn:'Empezar',
+ foot:'プロトタイプ · 漢字14問 · 単語27問'},
+es:{ih:'Las palabras chinas se construyen con piezas.',ip:'Te damos un significado. Encuentra las dos piezas. Dos juegos: construir un carácter o una palabra.',ibtn:'Empezar',
  build:'Construye esto',check:'Comprobar',next:'Siguiente',share:'Compartir',copied:'Copiado',hintb:'Pista',hint:'Pista',
  kg:'ambas bien',kh:'una bien',kn:'ninguna',nu:'nuevo',coll:'Resueltos',chap:'Capítulo',lore:'De dónde viene',oracle:'formas oraculares, ~1200 a.C.',
- kchar:'Caracteres',kword:'Palabras',diff:['fácil','medio','difícil'],tchar:'dos piezas → un carácter',tword:'dos caracteres → una palabra',
+ kchar:'Caracteres',kword:'Palabras',diff:['fácil','medio','difícil'],mchar:'Caracteres',mword:'Palabras',tchar2:'piezas → carácter',tword2:'caracteres → palabra',mDone:'{m}: completado.',tryOther:'Prueba el otro',tchar:'dos piezas → un carácter',tword:'dos caracteres → una palabra',
  chDone:'Capítulo completado',chNext:'Siguiente capítulo',
  dtitle:'Resolviste los 41.',dbody:'Eso es todo el prototipo. La versión real sigue: las mismas piezas construyen miles de palabras chinas reales.',
  solvedIt:'Resuelto en {n}',failedIt:'Sin intentos',
- foot:'Prototipo · 5 capítulos · 41 puzles'}};
+ foot:'Prototipo · 14 caracteres · 27 palabras'}};
 
 var B={
 '日':['☀️','sun','太阳','太陽','sol','rì'],'月':['🌙','moon','月亮','月','luna','yuè'],
@@ -544,14 +556,18 @@ function obOf(ch){return OB[ch]?'<svg class="ob" viewBox="0 0 24 24" aria-hidden
 
 var lang='en',t=L.en,LI={en:1,zh:2,ja:3,es:4};
 try{var sv=localStorage.getItem('hz-lang');if(sv&&L[sv])lang=sv;else{var nv=(navigator.language||'en').slice(0,2);if(L[nv])lang=nv;}}catch(e){}
-var solved={},ci=0,qi=0,sel=[],tries=[],over=false,shown=0;
+var solved={},ci=0,qi=0,sel=[],tries=[],over=false,shown=0,MODE='char';
+function modeChs(){var o=[];CH.forEach(function(h,i){if(h.k===MODE)o.push(i);});return o;}
+function modeAll(){var o=[];modeChs().forEach(function(i){o=o.concat(chQ(i));});return o;}
+function modeSolved(){return modeAll().filter(function(x){return solved[x.w];}).length;}
+function chNo(c){return modeChs().indexOf(c)+1;}
 function q(id){return document.getElementById(id);}
 var DIFF={'明':1,'炎':1,'林':1,'森':2,'尘':2,'泪':2,'尖':3,'火山':1,'森林':1,'山水':2,'明月':2,'尘土':2,'明日':3,'看':1,'休':2,'从':2,'好':2,'闯':2,'问':3,'闻':3,'大人':1,'好人':1,'口水':2,'泪水':2,'人口':3,'小心':3,'日子':3,'火车':2,'河马':2,'松鼠':2,'熊猫':2,'火鸡':2,'电脑':2,'冰箱':2,'银河':3,'电影':3,'袋鼠':3,'海豚':3,'眼镜':3,'地铁':3,'口红':3};
 function dOf(p){return DIFF[p.w]||2;}
 function nTiles(p){return dOf(p)===1?4:(dOf(p)===2?6:8);}
 function chQ(c){return Q.filter(function(x){return x.c===c;}).slice().sort(function(a,b){return dOf(a)-dOf(b);});}
 function chDone(c){return chQ(c).every(function(x){return solved[x.w];});}
-function chLabel(c){var h=CH[c];return t.chap+' '+(c+1)+' · '+h.t[lang]+' · '+(h.k==='char'?t.kchar:t.kword);}
+function chLabel(c){var h=CH[c];return t.chap+' '+chNo(c)+' · '+h.t[lang];}
 function known(){var o={};Q.forEach(function(x){if(solved[x.w])o[x.w]=1;});return o;}
 function rnd(seed){var x=seed*9301%233280;return function(){x=(x*9301+49297)%233280;return x/233280;};}
 function tilesFor(p,idx){
@@ -603,6 +619,8 @@ function progress(){
   var list=chQ(ci),n=list.filter(function(x){return solved[x.w];}).length;
   q('cnt').textContent=n;q('tot').textContent=list.length;
   q('bar').style.width=Math.round(n/list.length*100)+'%';
+  q('m-char').innerHTML=t.mchar+'<span class="cn">'+t.tchar2+'</span>';
+  q('m-word').innerHTML=t.mword+'<span class="cn">'+t.tword2+'</span>';
   drawColl();drawStrip();}
 function drawColl(){var g=q('coll');g.innerHTML='';
   chQ(ci).forEach(function(p){var d=document.createElement('div');
@@ -610,13 +628,20 @@ function drawColl(){var g=q('coll');g.innerHTML='';
     else{d.textContent='？';d.className='lock';}
     g.appendChild(d);});}
 function drawStrip(){var st=q('strip');st.innerHTML='';
-  CH.forEach(function(h,i){var d=document.createElement('div');
+  modeChs().forEach(function(i,k){var d=document.createElement('div');
     d.className='chip'+(i===ci?' now':'')+(chDone(i)?' ok':'');
-    d.textContent=i+1;d.title=chLabel(i);
-    if(i<=ci||chDone(i-1)){d.style.cursor='pointer';d.onclick=function(){goCh(i);};}
+    d.textContent=k+1;d.title=chLabel(i);
+    d.style.cursor='pointer';d.onclick=function(){goCh(i);};
     st.appendChild(d);});}
 var justSolved=null;
 function goCh(c){ci=c;qi=firstUnsolved(c);q('donebox').innerHTML='';load();window.scrollTo(0,0);}
+function setMode(m){
+  MODE=m;
+  q('m-char').setAttribute('aria-selected',m==='char');
+  q('m-word').setAttribute('aria-selected',m==='word');
+  var chs=modeChs(),target=chs[0];
+  for(var i=0;i<chs.length;i++){if(!chDone(chs[i])){target=chs[i];break;}}
+  goCh(target);}
 
 function check(){
   if(over||sel.length<2)return;
@@ -659,18 +684,21 @@ function finish(win){
   if(!last)q('nx').onclick=next;
   progress();justSolved=null;
   if(chDone(ci))setTimeout(chComplete,260);}
+function nextCh(){var m=modeChs(),k=m.indexOf(ci);return k>=0&&k<m.length-1?m[k+1]:-1;}
 function next(){
   var list=chQ(ci),k=qi;
   for(var i=1;i<=list.length;i++){var j=(qi+i)%list.length;if(!solved[list[j].w]){k=j;break;}}
-  if(k===qi&&solved[list[qi].w]){if(ci<CH.length-1&&chDone(ci)){goCh(ci+1);return;}}
+  if(k===qi&&solved[list[qi].w]){var nc=nextCh();if(nc>-1&&chDone(ci)){goCh(nc);return;}}
   qi=k;load();window.scrollTo(0,0);}
 function chComplete(){
-  var last=ci>=CH.length-1;
-  q('donebox').innerHTML='<div class="done"><h3>'+(last?t.dtitle:t.chDone)+'</h3><p>'+(last?t.dbody:chLabel(ci))+'</p>'
-    +(last?'<button class="btn" id="allshare">'+t.share+'</button>':'<button class="btn" id="cn">'+t.chNext+' · '+CH[ci+1].t[lang]+'</button>')+'</div>';
-  if(last)q('allshare').onclick=function(){var g='';Q.forEach(function(x,i){g+='🟩';if((i+1)%7===0&&i+1<Q.length)g+='\n';});
-    copy('字 · Hanzi\n'+t.dtitle+'\n'+g+'\n'+location.href);};
-  else q('cn').onclick=function(){goCh(ci+1);};
+  var nc=nextCh(),last=nc<0;
+  q('donebox').innerHTML='<div class="done"><h3>'+(last?t.mDone.replace('{m}',MODE==='char'?t.mchar:t.mword):t.chDone)+'</h3><p>'+(last?t.dbody:chLabel(ci))+'</p>'
+    +(last?'<button class="btn" id="swap">'+t.tryOther+'</button> <button class="btn ghost" id="allshare">'+t.share+'</button>'
+          :'<button class="btn" id="cn">'+t.chNext+' · '+CH[nc].t[lang]+'</button>')+'</div>';
+  if(last){q('swap').onclick=function(){setMode(MODE==='char'?'word':'char');};
+    q('allshare').onclick=function(){var a=modeAll(),g='';a.forEach(function(x,i){g+='🟩';if((i+1)%7===0&&i+1<a.length)g+='\n';});
+      copy('字 · Hanzi\n'+(MODE==='char'?t.mchar:t.mword)+' '+a.length+'/'+a.length+'\n'+g+'\n'+location.href);};}
+  else q('cn').onclick=function(){goCh(nc);};
   window.scrollTo(0,0);}
 
 function applyLang(){t=L[lang];document.documentElement.lang=lang;
@@ -678,7 +706,9 @@ function applyLang(){t=L[lang];document.documentElement.lang=lang;
   q('l-build').textContent=t.build;q('l-coll').textContent=t.coll;q('hintb').textContent=t.hintb;
   q('foot').textContent=t.foot;
   if(q('game').style.display!=='none')load();}
-q('i-btn').onclick=function(){q('intro').style.display='none';q('game').style.display='block';load();};
+q('i-btn').onclick=function(){q('intro').style.display='none';q('game').style.display='block';q('modes').style.display='flex';setMode('char');};
+q('m-char').onclick=function(){if(MODE!=='char')setMode('char');};
+q('m-word').onclick=function(){if(MODE!=='word')setMode('word');};
 q('check').onclick=check;q('hintb').onclick=hint;
 var ls=q('lang');ls.value=lang;
 ls.onchange=function(){lang=this.value;try{localStorage.setItem('hz-lang',lang);}catch(e){}applyLang();};
