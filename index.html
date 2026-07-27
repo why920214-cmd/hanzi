@@ -1,0 +1,687 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>字 — Hanzi</title>
+<style>
+  :root{
+    --bg:#E4EAEC; --paper:#F7F9F9; --sunk:#EDF1F2; --line:#DCE3E5; --line-2:#C6D0D3;
+    --ink:#1B1F21; --ink-2:#5A646A; --ink-3:#939EA3;
+    --seal:#C8452F; --jade:#2E7A6B; --jade-bg:#E2EEEB; --gamboge:#B07D1E; --stone:#B4BEC1;
+    --f-han:"Songti SC","Songti TC","STSong","SimSun","Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK SC",serif;
+    --f-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
+    --s1:6px; --s2:10px; --s3:14px; --s4:20px; --s5:28px;
+    --t-xs:11px; --t-sm:12.5px; --t-md:14px; --t-lg:16px; --t-xl:20px; --t-2xl:26px;
+    --ease:cubic-bezier(.2,.7,.3,1);
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0E1113; --paper:#1A1E21; --sunk:#141719; --line:#2A3033; --line-2:#3A4245;
+    --ink:#E8EDEE; --ink-2:#9AA5AA; --ink-3:#6B767B;
+    --seal:#E0705C; --jade:#5FBEA8; --jade-bg:#182C29; --gamboge:#D9A64B; --stone:#5A6367;}}
+  :root[data-theme="light"]{--bg:#E4EAEC;--paper:#F7F9F9;--sunk:#EDF1F2;--line:#DCE3E5;--line-2:#C6D0D3;--ink:#1B1F21;--ink-2:#5A646A;--ink-3:#939EA3;--seal:#C8452F;--jade:#2E7A6B;--jade-bg:#E2EEEB;--gamboge:#B07D1E;--stone:#B4BEC1}
+  :root[data-theme="dark"]{--bg:#0E1113;--paper:#1A1E21;--sunk:#141719;--line:#2A3033;--line-2:#3A4245;--ink:#E8EDEE;--ink-2:#9AA5AA;--ink-3:#6B767B;--seal:#E0705C;--jade:#5FBEA8;--jade-bg:#182C29;--gamboge:#D9A64B;--stone:#5A6367}
+
+  *{box-sizing:border-box;min-width:0}
+  body{margin:0;background:var(--bg)}
+  .app{max-width:440px;margin:0 auto;min-height:100vh;background:var(--paper);
+    font-family:var(--f-ui);font-size:var(--t-md);line-height:1.6;color:var(--ink);display:flex;flex-direction:column}
+  @media (min-width:520px){.app{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);
+    padding:var(--s3) var(--s4);border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:5}
+  .logo{display:flex;align-items:baseline;gap:8px}
+  .logo b{font-family:var(--f-han);font-size:26px;font-weight:400;line-height:1;color:var(--seal)}
+  .logo span{font-size:var(--t-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  select{font-family:var(--f-ui);font-size:var(--t-sm);padding:5px 6px;border:1px solid var(--line);
+    background:var(--paper);color:var(--ink-2);border-radius:3px;max-width:112px}
+  button:focus-visible,select:focus-visible{outline:2px solid var(--seal);outline-offset:1px}
+  main{flex:1;padding:var(--s4)}
+
+  .hero{text-align:center;padding:var(--s5) 0 var(--s4)}
+  .hero h1{margin:0 0 var(--s2);font-size:var(--t-2xl);font-weight:500;line-height:1.3;text-wrap:balance}
+  .hero p{margin:0 auto;max-width:30ch;color:var(--ink-2)}
+
+  .lvl{display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3);
+    background:var(--sunk);border:1px solid var(--line);border-radius:4px;margin-bottom:var(--s3)}
+  .lvl .g{flex:1;font-size:var(--t-sm);color:var(--ink-2);min-width:0}
+  .lvl .n{font-size:var(--t-sm);font-variant-numeric:tabular-nums;color:var(--ink-3);white-space:nowrap}
+  .lvl .n b{color:var(--ink);font-weight:500}
+  .dots{display:inline-flex;gap:3px;margin-left:8px;vertical-align:1px}
+  .dot{width:5px;height:5px;border-radius:50%;background:var(--line-2);display:block}
+  .dot.on{background:var(--seal)}
+  .track{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:5px}
+  .track i{display:block;height:100%;background:var(--jade);width:0;transition:width .45s var(--ease)}
+
+  .quiz{background:var(--sunk);border:1px solid var(--line);border-radius:4px;
+    padding:var(--s4) var(--s3);text-align:center;margin-bottom:var(--s3)}
+  .quiz .k{font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .quiz .v{font-size:var(--t-xl);font-weight:500;margin-top:4px;line-height:1.3;text-wrap:balance}
+  .quiz .sub{font-size:var(--t-sm);color:var(--ink-3);margin-top:5px}
+
+  .rows{display:flex;flex-direction:column;gap:5px;margin-bottom:var(--s3);min-height:4px}
+  .row{display:flex;align-items:center;gap:5px}
+  .gt{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line-2);border-radius:3px;background:var(--paper);
+    font-family:var(--f-han);font-size:19px;color:var(--ink);line-height:1}
+  .gt.g{border-color:var(--jade);background:var(--jade-bg)}
+  .gt.a{border-color:var(--gamboge)}
+  .gt.n{opacity:.4}
+  .rl{font-size:var(--t-sm);color:var(--ink-3);margin-left:5px}
+  .rl.g{color:var(--jade)} .rl.a{color:var(--gamboge)}
+
+  .board{display:flex;align-items:center;justify-content:center;gap:var(--s2);margin-bottom:var(--s3)}
+  .op{font-size:16px;color:var(--ink-3)}
+  .cell{width:70px;height:70px;flex:none;position:relative;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:1px;cursor:pointer;background:var(--paper);
+    border:1px dashed var(--line-2);padding:0;font-family:inherit;color:inherit;border-radius:3px}
+  .cell::before,.cell::after{content:"";position:absolute;background:var(--line-2);opacity:.45}
+  .cell::before{left:9px;right:9px;top:50%;height:1px}
+  .cell::after{top:9px;bottom:9px;left:50%;width:1px}
+  .cell>*{position:relative;z-index:1}
+  .go{display:block;width:100%;margin-bottom:var(--s4)}
+
+  .em{font-size:12px;line-height:1;height:13px}
+  .ic{width:13px;height:13px;display:block;color:var(--ink-3)}
+  .gl{font-family:var(--f-han);font-size:29px;line-height:1.2;color:var(--ink)}
+  .gl.w{font-size:20px}
+  .gs{font-size:9.5px;line-height:1.2;color:var(--ink-3);max-width:100%;padding:0 2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .tray{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s1)}
+  .tray button{height:70px;padding:4px 2px;background:var(--paper);border:1px solid var(--line);
+    border-radius:3px;cursor:pointer;font-family:inherit;color:inherit;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;overflow:hidden}
+  .tray button:hover{border-color:var(--line-2)}
+  .tray button.used{opacity:.35;pointer-events:none}
+
+  .card{background:var(--jade-bg);border:1px solid var(--jade);border-radius:4px;padding:var(--s3);margin-bottom:var(--s3)}
+  .card.miss{background:var(--sunk);border-color:var(--line-2)}
+  .card .hd{font-size:var(--t-lg);margin-bottom:3px;line-height:1.4}
+  .card .hd em{font-family:var(--f-han);font-style:normal;font-size:26px;margin-right:6px}
+  .card .hd i{font-style:normal;color:var(--ink-2);font-size:var(--t-md)}
+  .card .bd{font-size:var(--t-sm);color:var(--ink-2);line-height:1.65}
+  .tag{float:right;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+    border:1px solid var(--line-2);border-radius:2px;padding:1px 5px;margin-top:5px}
+  .lore{margin-top:var(--s2);padding-top:var(--s2);border-top:1px solid var(--line-2);
+    font-size:var(--t-sm);color:var(--ink-2);line-height:1.7}
+  .lore .lk{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--seal);margin-bottom:3px}
+  .lore b{font-weight:500;color:var(--ink)}
+  .split{display:flex;align-items:flex-start;justify-content:center;gap:var(--s3);margin:var(--s3) 0 var(--s1)}
+  .split .op{margin-top:26px}
+  .pt{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px}
+  .pt b{font-family:var(--f-han);font-weight:400;font-size:26px;line-height:1.1}
+  .pt span{font-size:var(--t-sm);color:var(--ink-2)}
+  .ob{width:38px;height:38px;color:var(--seal);display:block;margin-bottom:2px}
+  .ob-x{display:block;width:38px;height:38px;margin-bottom:2px}
+  .obl{text-align:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--seal);opacity:.75;margin-bottom:var(--s3)}
+  .share{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:var(--t-sm);line-height:1.6;
+    background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:8px 10px;margin:var(--s2) 0}
+
+  .cap{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);
+    font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:var(--s4) 0 var(--s2)}
+  .cap button{font-family:var(--f-ui);font-size:var(--t-xs);letter-spacing:.04em;text-transform:none;
+    padding:3px 9px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);cursor:pointer;border-radius:3px}
+  .coll{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .coll div{height:42px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    border:1px solid var(--line);border-radius:3px;background:var(--paper);
+    font-family:var(--f-han);font-size:19px;color:var(--ink);line-height:1}
+  .coll div.got{border-color:var(--jade);background:var(--jade-bg)}
+  .coll div.w{font-size:11px}
+  .coll div.lock{background:var(--sunk);color:var(--ink-3);opacity:.45;font-size:13px;font-family:var(--f-ui)}
+  .strip{display:flex;gap:6px;justify-content:center;margin-top:var(--s3)}
+  .chip{width:27px;height:27px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);border-radius:50%;font-size:var(--t-sm);color:var(--ink-3);background:var(--paper)}
+  .chip.ok{border-color:var(--jade);color:var(--jade);background:var(--jade-bg)}
+  .chip.now{border-color:var(--ink);color:var(--paper);background:var(--ink)}
+  .chip.soon{opacity:.4;border-style:dashed}
+
+  .done{background:var(--jade-bg);border:1px solid var(--jade);border-radius:4px;padding:var(--s3);margin-bottom:var(--s3)}
+  .done h3{margin:0 0 var(--s1);font-size:var(--t-xl);font-weight:500}
+  .done p{margin:0 0 var(--s3);font-size:var(--t-sm);color:var(--ink-2);line-height:1.65}
+
+  .btn{font-family:var(--f-ui);font-size:var(--t-md);padding:11px 18px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--paper);cursor:pointer;border-radius:3px}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+  .btn[disabled]{opacity:.3;cursor:default}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
+    background:var(--ink);color:var(--paper);font-size:var(--t-sm);padding:8px 16px;border-radius:20px;
+    opacity:0;pointer-events:none;z-index:20;transition:opacity .2s,transform .2s var(--ease)}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .foot{padding:var(--s3) var(--s4) var(--s5);border-top:1px solid var(--line);
+    font-size:var(--t-sm);color:var(--ink-3);text-align:center}
+
+  @media (prefers-reduced-motion:no-preference){
+    .row{animation:rise .26s var(--ease) both}
+    .card{animation:rise .3s var(--ease) both}
+    @keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+    .card .hd em{display:inline-block;animation:bloom .5s var(--ease) both}
+    @keyframes bloom{0%{transform:scale(.6);opacity:0}58%{transform:scale(1.1);opacity:1}100%{transform:scale(1)}}
+    .coll div.pop{animation:pop .5s var(--ease) both}
+    @keyframes pop{0%{transform:scale(.55);opacity:.2}60%{transform:scale(1.14)}100%{transform:scale(1);opacity:1}}
+    .shake{animation:sh .3s ease}
+    @keyframes sh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+    .tray button,.btn,.cell{transition:border-color .14s var(--ease),background .14s var(--ease),opacity .25s var(--ease)}}
+  @media (max-width:370px){.cell{width:62px;height:62px}.gl{font-size:26px}}
+</style>
+
+<div class="app">
+  <header class="bar">
+    <div class="logo"><b>字</b><span>Hanzi</span></div>
+    <select id="lang" aria-label="Language">
+      <option value="en">English</option><option value="zh">简体中文</option>
+      <option value="ja">日本語</option><option value="es">Español</option>
+    </select>
+  </header>
+
+  <main>
+    <div id="intro">
+      <div class="hero"><h1 id="i-h"></h1><p id="i-p"></p></div>
+      <div style="text-align:center;margin-bottom:var(--s5)"><button class="btn" id="i-btn"></button></div>
+    </div>
+
+    <div id="game" style="display:none">
+      <div id="donebox"></div>
+      <div class="lvl">
+        <span class="g"><span id="lv"></span><span class="track"><i id="bar"></i></span></span>
+        <span class="n"><b id="cnt">0</b> / <span id="tot">7</span></span>
+      </div>
+      <div class="quiz"><div class="k" id="l-build"></div><div class="v" id="target"></div><div class="sub" id="sub"></div></div>
+      <div class="rows" id="rows"></div>
+      <div class="board">
+        <button class="cell" id="s0" aria-label="first block"></button>
+        <span class="op">＋</span>
+        <button class="cell" id="s1" aria-label="second block"></button>
+      </div>
+      <button class="btn go" id="check"></button>
+      <div class="tray" id="tray"></div>
+      <div id="result"></div>
+      <div class="cap"><span id="l-coll"></span><button id="hintb" style="display:none"></button></div>
+      <div class="coll" id="coll"></div>
+      <div class="strip" id="strip"></div>
+    </div>
+  </main>
+  <p class="foot" id="foot"></p>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+var L={
+en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find the two parts that make it. Six tries.',ibtn:'Start',
+ build:'Build this',check:'Check',next:'Next',share:'Share',copied:'Copied',hintb:'Hint',hint:'Hint',
+ kg:'both right',kh:'one right',kn:'neither',nu:'new',coll:'Found',chap:'Chapter',lore:'Where it comes from',oracle:'oracle-bone forms, ~1200 BC',
+ kchar:'Characters',kword:'Words',diff:['easy','medium','hard'],tchar:'two parts → one character',tword:'two characters → one word',
+ chDone:'Chapter complete',chNext:'Next chapter',
+ dtitle:'You solved all 41.',dbody:'That is the whole prototype. The real thing keeps going — the same few dozen parts build thousands of actual Chinese words.',
+ solvedIt:'Solved in {n}',failedIt:'Out of tries',
+ foot:'Prototype · 5 chapters · 41 puzzles'},
+zh:{ih:'中文的词，是拼出来的。',ip:'我们给你一个意思，你找出组成它的两块。六次机会。',ibtn:'开始',
+ build:'拼出这个',check:'检查',next:'下一题',share:'分享',copied:'已复制',hintb:'提示',hint:'提示',
+ kg:'两块都对',kh:'对了一块',kn:'都不对',nu:'新',coll:'已解开',chap:'第',lore:'字源',oracle:'甲骨文字形 · 约公元前 1200 年',
+ kchar:'造字',kword:'造词',diff:['简单','中等','高级'],tchar:'两个部件 → 一个字',tword:'两个字 → 一个词',
+ chDone:'本章完成',chNext:'下一章',
+ dtitle:'41 题全解开了。',dbody:'这个原型里就这些。真正的版本会一直下去 —— 同样这几十块，能拼出几千个真实存在的中文词。',
+ solvedIt:'{n} 次猜中',failedIt:'次数用完了',
+ foot:'原型 · 5 章 · 41 题'},
+ja:{ih:'中国語の単語は、部品でできている。',ip:'意味を出します。それを作る2つの部品を当ててください。6回まで。',ibtn:'開始',
+ build:'これを作る',check:'判定',next:'次へ',share:'シェア',copied:'コピーしました',hintb:'ヒント',hint:'ヒント',
+ kg:'両方正解',kh:'1つ正解',kn:'不正解',nu:'新',coll:'解けた',chap:'第',lore:'字源',oracle:'甲骨文の字形・紀元前1200年頃',
+ kchar:'漢字づくり',kword:'単語づくり',diff:['やさしい','ふつう','難しい'],tchar:'部品2つ → 漢字1つ',tword:'漢字2つ → 単語1つ',
+ chDone:'章クリア',chNext:'次の章',
+ dtitle:'41問すべて解きました。',dbody:'プロトタイプはここまで。本番版はさらに続きます。',
+ solvedIt:'{n}回で正解',failedIt:'回数切れ',
+ foot:'プロトタイプ · 5章 · 41問'},
+es:{ih:'Las palabras chinas se construyen con piezas.',ip:'Te damos un significado. Encuentra las dos piezas que lo forman. Seis intentos.',ibtn:'Empezar',
+ build:'Construye esto',check:'Comprobar',next:'Siguiente',share:'Compartir',copied:'Copiado',hintb:'Pista',hint:'Pista',
+ kg:'ambas bien',kh:'una bien',kn:'ninguna',nu:'nuevo',coll:'Resueltos',chap:'Capítulo',lore:'De dónde viene',oracle:'formas oraculares, ~1200 a.C.',
+ kchar:'Caracteres',kword:'Palabras',diff:['fácil','medio','difícil'],tchar:'dos piezas → un carácter',tword:'dos caracteres → una palabra',
+ chDone:'Capítulo completado',chNext:'Siguiente capítulo',
+ dtitle:'Resolviste los 41.',dbody:'Eso es todo el prototipo. La versión real sigue: las mismas piezas construyen miles de palabras chinas reales.',
+ solvedIt:'Resuelto en {n}',failedIt:'Sin intentos',
+ foot:'Prototipo · 5 capítulos · 41 puzles'}};
+
+var B={
+'日':['☀️','sun','太阳','太陽','sol','rì'],'月':['🌙','moon','月亮','月','luna','yuè'],
+'水':['💧','water','水','水','agua','shuǐ'],'火':['🔥','fire','火','火','fuego','huǒ'],
+'木':['🌳','tree','树','木','árbol','mù'],'山':['⛰️','mountain','山','山','montaña','shān'],
+'土':['🟫','earth','土','土','tierra','tǔ'],'目':['👁️','eye','眼','目','ojo','mù'],
+'小':['','small','小','小','pequeño','xiǎo'],'大':['','big','大','大','grande','dà'],
+'人':['🧍','person','人','人','persona','rén'],'女':['👩','woman','女','女','mujer','nǚ'],
+'子':['👶','child','孩子','子','niño','zǐ'],'口':['👄','mouth','嘴','口','boca','kǒu'],
+'手':['✋','hand','手','手','mano','shǒu'],'门':['🚪','door','门','門','puerta','mén'],
+'耳':['👂','ear','耳','耳','oreja','ěr'],'马':['🐴','horse','马','馬','caballo','mǎ'],
+'心':['❤️','heart','心','心','corazón','xīn'],'车':['🚗','vehicle','车','車','vehículo','chē'],
+'电':['⚡','electric','电','電','eléctrico','diàn'],'银':['🥈','silver','银','銀','plata','yín'],
+'河':['🏞️','river','河','川','río','hé'],'奶':['🥛','milk','奶','牛乳','leche','nǎi'],
+'路':['🛣️','road','路','道','camino','lù'],'星':['⭐','star','星','星','estrella','xīng'],
+'天':['☁️','sky','天','空','cielo','tiān'],'白':['⬜','white','白','白','blanco','bái'],
+'影':['','shadow','影','影','sombra','yǐng'],'光':['💡','light','光','光','luz','guāng'],
+'画':['🖼️','picture','画','絵','imagen','huà'],'声':['🔊','sound','声','音','sonido','shēng'],
+'铁':['🔩','iron','铁','鉄','hierro','tiě'],'快':['🏃','fast','快','速い','rápido','kuài'],
+'长':['📏','long','长','長い','largo','cháng'],'牛':['🐄','cow','牛','牛','vaca','niú'],
+'猪':['🐷','pig','猪','豚','cerdo','zhū'],'松':['🌲','pine','松','松','pino','sōng'],
+'鼠':['🐭','mouse','鼠','ねずみ','ratón','shǔ'],'猫':['🐱','cat','猫','猫','gato','māo'],
+'袋':['👜','pocket','袋','袋','bolsa','dài'],'跳':['🤸','to jump','跳','跳ぶ','saltar','tiào'],
+'海':['🌊','sea','海','海','mar','hǎi'],'豚':['🐖','pig','豚','豚','cerdo','tún'],
+'鱼':['🐟','fish','鱼','魚','pez','yú'],'熊':['🐻','bear','熊','熊','oso','xióng'],
+'竹':['🎋','bamboo','竹','竹','bambú','zhú'],'黑':['⬛','black','黑','黒','negro','hēi'],
+'鸡':['🐔','chicken','鸡','鶏','pollo','jī'],'鸟':['🐦','bird','鸟','鳥','pájaro','niǎo'],
+'肉':['🥩','meat','肉','肉','carne','ròu'],'红':['🟥','red','红','赤','rojo','hóng'],
+'眼':['👁️','eye','眼','目','ojo','yǎn'],'镜':['🪞','mirror','镜','鏡','espejo','jìng'],
+'面':['🙂','face','面','面','cara','miàn'],'地':['🌍','ground','地','地','suelo','dì'],
+'下':['⬇️','below','下','下','abajo','xià'],'道':['🛤️','way','道','道','vía','dào'],
+'脑':['🧠','brain','脑','脳','cerebro','nǎo'],'机':['⚙️','machine','机','機','máquina','jī'],
+'冰':['🧊','ice','冰','氷','hielo','bīng'],'箱':['📦','box','箱','箱','caja','xiāng'],
+'冷':['🥶','cold','冷','冷たい','frío','lěng'],'笔':['🖊️','pen','笔','ペン','bolígrafo','bǐ'],
+'色':['🎨','colour','色','色','color','sè'],'美':['🌸','beautiful','美','美しい','bello','měi']};
+
+var S='stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+var TR='<path d="M{x} 3.5l3.2 5.2h-6.4z" fill="currentColor"/><path d="M{x} 8.7l3.9 5.3h-7.8z" fill="currentColor"/>';
+function tree(x){return TR.split('{x}').join(x);}
+var IC={
+'小':'<circle cx="8" cy="8" r="2.2" fill="currentColor"/>','大':'<circle cx="8" cy="8" r="6" fill="currentColor"/>',
+'影':'<circle cx="6" cy="6" r="3.2" '+S+'/><ellipse cx="10.5" cy="12" rx="4.5" ry="1.8" fill="currentColor" opacity=".55"/>',
+'林':'<g transform="scale(.62) translate(1 3)">'+tree(5)+tree(15)+'</g>',
+'森':'<g transform="scale(.52) translate(2 1)">'+tree(10)+'</g><g transform="scale(.52) translate(-2 12)">'+tree(5)+tree(19)+'</g>',
+'炎':'<path d="M8 1.5c2.4 2 3.2 3.4 3.2 4.7 0 1.5-1.4 2.3-3.2 2.3S4.8 7.7 4.8 6.2c0-1.3.8-2.7 3.2-4.7z" fill="currentColor"/><path d="M8 8.2c2.7 2.2 3.6 3.8 3.6 5.2 0 1.7-1.6 2.6-3.6 2.6s-3.6-.9-3.6-2.6c0-1.4.9-3 3.6-5.2z" fill="currentColor" opacity=".55"/>',
+'尘':'<circle cx="4" cy="5" r="1.1" fill="currentColor"/><circle cx="9.5" cy="3.6" r=".8" fill="currentColor"/><circle cx="12" cy="7.5" r="1.1" fill="currentColor"/><circle cx="6.5" cy="9.5" r=".8" fill="currentColor"/><circle cx="10" cy="12" r="1.1" fill="currentColor"/><circle cx="3.5" cy="12.5" r=".8" fill="currentColor"/>',
+'尖':'<path d="M8 2L14 14H2z" fill="currentColor"/>'};
+
+var CH=[
+{t:{en:'Nature',zh:'自然',ja:'自然',es:'Naturaleza'},k:'char',pool:['日','月','木','火','水','土','小','大','目','山']},
+{t:{en:'Nature',zh:'自然',ja:'自然',es:'Naturaleza'},k:'word',pool:['日','月','木','火','水','土','小','大','目','山']},
+{t:{en:'People',zh:'人',ja:'人',es:'Personas'},k:'char',pool:['人','女','子','口','手','门','耳','马','木','目','心']},
+{t:{en:'People',zh:'人',ja:'人',es:'Personas'},k:'word',pool:['人','女','子','口','手','水','大','小','心','日','月']},
+{t:{en:'Modern life',zh:'现代',ja:'現代',es:'Vida moderna'},k:'word',pool:[]}];
+
+function P(a,b,w,py,ic,c,q,qes,s_en,s_zh,s_ja,s_es,t){
+  return {a:a,b:b,w:w,py:py,ic:ic,c:c,q:{en:q,es:qes||q},s:{en:s_en,zh:s_zh,ja:s_ja,es:s_es},t:t||null};}
+
+var Q=[
+P('日','月','明','míng','🔆',0,'bright','brillante',
+ 'The sun and the moon — the two brightest things there are.','太阳和月亮。天上最亮的两样东西。','太陽と月。','El sol y la luna.',['日','月','水','火']),
+P('木','木','林','lín','§林',0,'woods','bosque',
+ 'Two trees. You can use the same block twice.','两棵树。同一块可以用两次。','木が二本。同じブロックを二度使えます。','Dos árboles. Puedes usar la misma pieza dos veces.'),
+P('木','林','森','sēn','§森',0,'forest','selva',
+ 'Three trees. The character you just made is now a part.','三棵树。你刚解开的那个字，现在成了零件。','木が三本。今作った字が部品になります。','Tres árboles. El carácter que acabas de crear ya es una pieza.'),
+P('火','火','炎','yán','§炎',0,'blaze','llama','Fire stacked on fire.','火叠着火。','火の上に火。','Fuego sobre fuego.'),
+P('小','土','尘','chén','§尘',0,'dust','polvo',
+ 'Small earth. That is how Chinese defines dust.','小的土。中文就是这么定义灰尘的。','小さい土。','Tierra pequeña.'),
+P('小','大','尖','jiān','§尖',0,'a point, a tip','punta',
+ 'Small sitting on top of big — that shape is a point.','小的压在大的上面，那个形状本身就是一个尖。','小が大の上に。','Pequeño sobre grande.'),
+P('水','目','泪','lèi','😢',0,'a tear','lágrima',
+ 'Water at the eye. The three dots on the left are 水, squeezed thin.','眼睛上的水。左边那三点，是被挤扁了的「水」。','目のところの水。','Agua en el ojo.'),
+
+P('火','山','火山','huǒshān','🌋',1,'volcano','volcán',
+ 'Fire mountain. English borrowed Vulcan, a Roman god — you need mythology to see it.','火的山。英文 volcano 来自罗马火神 Vulcan，你得先懂神话。','火の山。','Montaña de fuego.'),
+P('山','水','山水','shānshuǐ','🏔️',1,'landscape','paisaje',
+ 'Mountain water. Also the name of an entire painting tradition.','山，和水。也是一整个画种的名字。','山と水。','Montaña y agua.'),
+P('森','林','森林','sēnlín','🌲',1,'forest (the word)','bosque (palabra)',
+ 'The two characters you solved earlier now make a word.','你前面解开的两个字，现在拼成一个词。','先ほどの二字が単語になります。','Los dos caracteres que resolviste forman una palabra.'),
+P('明','月','明月','míngyuè','🌕',1,'a bright moon','luna clara',
+ 'Two of the most common characters in Chinese poetry.','中文诗里出现最多的两个字之一。','漢詩に最も多く現れる語。','De los más frecuentes en la poesía china.'),
+P('明','日','明日','míngrì','📅',1,'tomorrow','mañana',
+ 'Bright day. The written way to say tomorrow.','明，和日。书面一点的「明天」。','日本語と同じ書き方。','Día brillante.'),
+P('尘','土','尘土','chéntǔ','🟫',1,'dust (the word)','polvo (palabra)',
+ 'Dust and earth.','尘，和土。','ちりと土。','Polvo y tierra.'),
+
+P('人','木','休','xiū','😴',2,'to rest','descansar',
+ 'A person leaning against a tree.','一个人靠在一棵树上。','人が木にもたれている。','Una persona apoyada en un árbol.'),
+P('人','人','从','cóng','👣',2,'to follow','seguir',
+ 'One person walking behind another.','一个人走在另一个人后面。','人が人の後ろを歩く。','Una persona detrás de otra.'),
+P('女','子','好','hǎo','👍',2,'good','bueno','Woman and child.','女，和子。','女と子。','Mujer y niño.'),
+P('手','目','看','kàn','👀',2,'to look','mirar',
+ 'A hand above the eye — shading your eyes to see far.','手搭在眼睛上方。遮着阳光往远处望的那个动作。','手を目の上に。','Una mano sobre el ojo.'),
+P('门','口','问','wèn','❓',2,'to ask','preguntar','A mouth at the door.','嘴凑到门口。','門のところの口。','Una boca en la puerta.'),
+P('门','耳','闻','wén','👃',2,'to hear of, to smell','oler',
+ 'An ear against the door. Chinese draws hearing news as eavesdropping.','耳朵贴在门上。中文里「听说」这个动作，画的是偷听。','門に耳をあてる。','Una oreja contra la puerta.'),
+P('门','马','闯','chuǎng','💨',2,'to burst in','irrumpir',
+ 'A horse bursting out through a gate. You can hear this character.','一匹马从门里冲出来。这个字读起来都带着声音。','門から馬が飛び出す。','Un caballo saliendo por la puerta.'),
+
+P('人','口','人口','rénkǒu','👥',3,'population','población',
+ 'The number of mouths to feed.','要养活的嘴的数量，就是人口。','養う口の数。','Las bocas que alimentar.'),
+P('大','人','大人','dàrén','🧑',3,'an adult','adulto','Big person.','大的人。','大きい人。','Persona grande.'),
+P('好','人','好人','hǎorén','😇',3,'a good person','buena persona','Good person.','好的人。','良い人。','Persona buena.'),
+P('小','心','小心','xiǎoxīn','⚠️',3,'be careful','ten cuidado',
+ 'Small heart. Nothing in the English hints at either part.','小的心。英文 careful 里没有任何一个音节暗示「小」或「心」。','小さい心。','Corazón pequeño.'),
+P('口','水','口水','kǒushuǐ','🤤',3,'saliva','saliva','Mouth water.','嘴里的水。','口の水。','Agua de la boca.'),
+P('水','目','泪水','lèishuǐ','😭',3,'tears','lágrimas','Tear water. Careful — the parts are not what you think.','泪，和水。注意别拼错了。','涙の水。','Agua de lágrimas.'),
+P('日','子','日子','rìzi','🗓️',3,'days, a life','días','Sun child — the days you live through.','日和子。','日と子。','Los días que vives.'),
+
+P('银','河','银河','yínhé','🌌',4,'the milky way','vía láctea',
+ 'Silver river. English sees milk; Chinese sees silver. Same band of stars, two different minds.','银 ＋ 河。英文管它叫「牛奶路」，中文看见的是银子。同一条东西，两边想的完全不一样。','銀の川。英語は「ミルク」、日本語は「天の川」。','Río de plata. El inglés ve leche; el chino ve plata.',
+ ['银','河','奶','路','星','天','白','水']),
+P('电','影','电影','diànyǐng','🎬',4,'a movie','película',
+ 'Electric shadow. English named the motion; Chinese named the shadow.','电 ＋ 影。英文 movie 的词根是「动」，中文选的是「影」。一百年前造的词，今天看还是准的。','電気の影。日本語は「映画」。','Sombra eléctrica.',
+ ['电','影','光','画','声','火','车','快']),
+P('火','车','火车','huǒchē','🚂',4,'a train','tren',
+ 'Fire vehicle. More honest than English train, which just means to drag.','火 ＋ 车。英文 train 的意思其实是「拖拽」，中文选的是驱动它的东西。','火の車。','Vehículo de fuego.',
+ ['火','车','铁','快','长','马','路','大']),
+P('河','马','河马','hémǎ','🦛',4,'a hippopotamus','hipopótamo',
+ 'River horse. Hippopotamus is Greek for river horse too — Chinese just does not make you learn Greek first.','河 ＋ 马。有意思的是 hippopotamus 在希腊语里也是「河马」，只是你得先会希腊语才看得见。','川の馬。','Caballo de río.',
+ ['河','马','水','牛','大','猪','山','长']),
+P('松','鼠','松鼠','sōngshǔ','🐿️',4,'a squirrel','ardilla',
+ 'Pine mouse. Chinese named where it lives; English borrowed Greek for shadow-tail.','松 ＋ 鼠。中文按它住哪儿命名；英文 squirrel 来自希腊语「影子尾巴」。','松のねずみ。','Ratón de pino.',
+ ['松','鼠','木','猫','小','山','长','大']),
+P('袋','鼠','袋鼠','dàishǔ','🦘',4,'a kangaroo','canguro',
+ 'Pocket mouse. Once you have 鼠, half the animal kingdom opens up.','袋 ＋ 鼠。有了「鼠」这块，半个动物园都能拼出来。','袋のねずみ。','Ratón de bolsa.',
+ ['袋','鼠','跳','大','马','长','山','水']),
+P('海','豚','海豚','hǎitún','🐬',4,'a dolphin','delfín',
+ 'Sea pig. Not a fish, and Chinese says so. Careful: sea + fish is also a real word.','海 ＋ 豚。中文认得清它不是鱼。注意：海 + 鱼 也是真词（海鱼）。','海の豚。','Cerdo de mar.',
+ ['海','豚','鱼','水','猪','大','马','长']),
+P('熊','猫','熊猫','xióngmāo','🐼',4,'a panda','panda',
+ 'Bear cat. English took the word from Nepali; Chinese just described it.','熊 ＋ 猫。英文 panda 借自尼泊尔语，是个音；中文直接说它长什么样。','熊の猫。','Oso gato.',
+ ['熊','猫','黑','白','大','竹','山','马']),
+P('火','鸡','火鸡','huǒjī','🦃',4,'a turkey','pavo',
+ 'Fire chicken, for the red wattle. English named it after a country it never came from.','火 ＋ 鸡 —— 说的是它脖子上那团红。英文 turkey 是拿一个跟它毫无关系的国家命名的。','火の鶏。','Pollo de fuego.',
+ ['火','鸡','鸟','肉','大','山','土','红']),
+P('眼','镜','眼镜','yǎnjìng','👓',4,'glasses','gafas',
+ 'Eye mirror. Note 眼 and 目 both mean eye — 目 is the ancient one, 眼 is the one you use.','眼 ＋ 镜。注意 眼 和 目 都是眼睛：目 是古的那个，眼 是你日常用的那个。','目の鏡。','Espejo de ojo.',
+ ['眼','镜','目','水','面','小','光','白']),
+P('地','铁','地铁','dìtiě','🚇',4,'the subway, the metro','metro',
+ 'Ground iron. English named the tunnel; Chinese named the rails. Three traps here are real words.','地 ＋ 铁。英文说的是「地下的路」，中文说的是「地下的铁」。这题三个陷阱都是真词。','地の鉄。','Hierro de tierra.',
+ ['地','铁','车','下','路','道','火','快']),
+P('电','脑','电脑','diànnǎo','💻',4,'a computer','ordenador',
+ 'Electric brain. English named the job; Chinese named the organ it replaces.','电 ＋ 脑。英文 computer 说的是「计算的东西」，中文说的是「电做的脑子」。','電気の脳。','Cerebro eléctrico.',
+ ['电','脑','机','心','手','子','快','小']),
+P('冰','箱','冰箱','bīngxiāng','🧊',4,'a fridge','nevera',
+ 'Ice box. English called it that too, a century ago, then changed its mind.','冰 ＋ 箱。英文一百年前也叫它 icebox，后来改口了，中文没改。','氷の箱。','Caja de hielo.',
+ ['冰','箱','冷','水','门','白','小','大']),
+P('口','红','口红','kǒuhóng','💄',4,'lipstick','lápiz labial',
+ 'Mouth red. English named the object; Chinese named the result.','口 ＋ 红。英文说的是那根「棒」，中文说的是抹上去之后的「红」。','口の赤。','Rojo de boca.',
+ ['口','红','笔','色','美','手','小','白'])];
+
+
+var TY={hui:{en:'compound ideograph',zh:'会意',ja:'会意',es:'ideograma compuesto'},
+ xing:{en:'phono-semantic',zh:'形声',ja:'形声',es:'fono-semántico'},
+ ci:{en:'compound word',zh:'复合词',ja:'複合語',es:'palabra compuesta'}};
+function E(k,se,sz,sj,ss,xe,xz,xj,xs){return {k:k,s:{en:se,zh:sz,ja:sj,es:ss},x:{en:xe,zh:xz,ja:xj,es:xs}};}
+var EX={
+'明':E('hui',
+ 'The two brightest things in the sky, stacked.',
+ '把天上最亮的两样东西叠在一起。',
+ '空で最も明るい二つを重ねました。',
+ 'Las dos cosas más brillantes del cielo, juntas.',
+ 'Chinese then uses this character for understanding: 明白, bright + white, means "I get it". English reaches for the same thing without noticing — I see, it is clear to me, that sheds light on it. Two unrelated languages, one instinct: knowing is light.',
+ '中文接着用它表示「懂了」：明白。英语其实干了一模一样的事而自己没发觉 —— I see、it is clear、that sheds light on it。两门毫无关系的语言，同一个直觉：懂得就是看见光。',
+ '中国語はこの字で「わかる」を表します：明白。英語も I see と言います。理解は光。',
+ 'Luego el chino usa este carácter para entender: 明白, brillante + blanco. El inglés hace lo mismo: I see, it is clear.'),
+'林':E('hui',
+ 'One more tree.',
+ '再加一棵树。',
+ '木をもう一本。',
+ 'Un árbol más.',
+ 'English needs three unrelated words for this — tree, woods, forest — and none of them look like the others. Chinese just draws another tree. Same move elsewhere: 人 person → 从 follow → 众 crowd.',
+ '英语在这里需要三个毫不相干的词 —— tree、woods、forest，谁也不像谁。中文只是又画了一棵树。同一招还用在：人 → 从 → 众。',
+ '英語は tree、woods、forest と無関係な三語が必要です。中国語は木を増やすだけ。',
+ 'El inglés necesita tres palabras sin relación: tree, woods, forest. El chino solo dibuja otro árbol.'),
+'森':E('hui',
+ 'Three trees — but 森 does not mean many trees. It means dense enough to go dark.',
+ '三棵树 —— 但「森」不是树多，是密到发暗。',
+ '木が三本。ただし「森」は数ではなく、暗くなるほどの密さです。',
+ 'Tres árboles, pero 森 no es cantidad: es tan denso que oscurece.',
+ 'So 阴森 means eerie and 森严 means forbidding. English feels it too — every fairy tale sends the child into the woods, never into the trees. Chinese just put the dread inside the character.',
+ '所以「阴森」是疹人，「森严」是让人不敢靠近。英语里也有这个感觉 —— 每个童话都把孩子送进 into the woods，从来不是 into the trees。中文把那份发毛直接写进了字里。',
+ 'だから「阴森」は不気味。英語も童話では into the woods と言います。',
+ 'Por eso 阴森 es siniestro. En inglés los cuentos mandan al niño into the woods, nunca into the trees.'),
+'炎':E('hui',
+ 'Fire on top of fire.',
+ '火叠着火。',
+ '火の上に火。',
+ 'Fuego sobre fuego.',
+ 'You will meet this at the doctor: 发炎 is inflammation, 肺炎 is pneumonia. Now look at the English word: inflammation comes from Latin flamma, flame. Two civilisations looked at a swollen joint and both said: fire.',
+ '你会在医院遇到它：发炎、肺炎。现在看英文那个词 —— inflammation 来自拉丁语 flamma，火焰。两个文明看着同一个肿痛的关节，都说：火。',
+ '病院で出会います：发炎、肺炎。英語の inflammation もラテン語の「炎」からです。',
+ 'Lo verás en medicina: 发炎. Y inflamación viene del latín flamma: llama. Dos civilizaciones dijeron fuego.'),
+'尘':E('hui',
+ 'Small earth.',
+ '小的土。',
+ '小さい土。',
+ 'Tierra pequeña.',
+ 'The older form is 塵 — a deer 鹿 standing on earth 土: the cloud thrown up by a running herd. Someone three thousand years ago decided dust was best explained by animals you could hear coming.',
+ '更早的写法是「塵」—— 上面一头鹿，下面一块土：鹿群奔跑扬起的那片土。三千年前有人决定，解释「尘」最好的方式是一群你能听见的动物。',
+ '古い形は「塵」。鹿の群れが巶き上げる土ぼこりです。',
+ 'La forma antigua es 塵: un ciervo sobre tierra, el polvo que levanta la manada.'),
+'尖':E('hui',
+ 'Small on top of big. The character is a drawing of a triangle.',
+ '上小下大。这个字就是一个三角形的图。',
+ '上が小さく下が大きい。字そのものが三角形です。',
+ 'Pequeño sobre grande: el carácter es el dibujo de un triángulo.',
+ 'This one is a newcomer — the great Han-dynasty dictionary does not have it. For centuries the word for sharp was a complicated character nobody enjoyed writing. Someone drew the obvious picture instead, and everyone quietly switched.',
+ '这是个新字 —— 汉代的《说文解字》里根本没有它。古人说「尖」用的是一个没人愿意写的复杂字。后来有人直接画了那个显而易见的图，大家就默默换了过去。',
+ '新しい字で、『説文解字』にはありません。誰かが絵を描いて定着しました。',
+ 'Es tardío: el gran diccionario Han no lo tiene. Alguien dibujó lo obvio y todos cambiaron.'),
+'泪':E('hui',
+ 'Water at the eye. Those three strokes on the left are 水 squeezed thin — you will see them on every liquid.',
+ '眼睛上的水。左边那三点是被挤扁的「水」，所有跟液体有关的字都带着它。',
+ '目のところの水。左の三点は「水」です。',
+ 'Agua en el ojo. Los tres trazos son 水 comprimido.',
+ 'Try it right now on any character with those three strokes: 河 river, 海 sea, 汗 sweat, 酒 alcohol. Four for four. This is the closest thing Chinese has to a spelling rule, and it is more reliable than English silent letters.',
+ '现在就去验证：凡是带着那三点的字 —— 河、海、汗、酒。四次四中。这是中文里最接近「拼写规则」的东西，而且比英语的不发音字母靠谱得多。',
+ '今すぐ試して：河、海、汗、酒。四つとも液体です。',
+ 'Compruébalo ahora: 河 río, 海 mar, 汗 sudor, 酒 alcohol. Cuatro de cuatro.'),
+'休':E('hui',
+ 'A person leaning against a tree.',
+ '一个人靠在一棵树上。',
+ '人が木にもたれている。',
+ 'Una persona apoyada en un árbol.',
+ 'Now look at the left half of the modern character: that vertical stroke with the little flick is still the person. Three thousand years, one nap, never got up. English rest comes from an Old English word for a bed — true, but you cannot see a bed in r-e-s-t.',
+ '现在看现代字的左半边：那一竖加一撇，还是那个人。三千年一觉，他一直没起来。英语 rest 来自古英语的「床」—— 是真的，但你在 r-e-s-t 里看不到任何一张床。',
+ '現代字の左半分、あの縦棒がまだ「人」です。三千年起きていません。',
+ 'Mira la mitad izquierda del carácter moderno: ese trazo sigue siendo la persona.'),
+'从':E('hui',
+ 'One person walking behind another.',
+ '一个人走在另一个人后面。',
+ '人が人の後ろを歩く。',
+ 'Una persona detrás de otra.',
+ 'Add a third and you get 众, a crowd. So Chinese counts people the way it counts trees: one, two, many. English switches words every time — person, pair, crowd — and hides the pattern.',
+ '再加一个就是「众」。中文数人和数树是同一套办法：一个、两个、一堆。英语每次都换一个词 —— person、pair、crowd —— 把规律藏了起来。',
+ 'もう一人加えると「众」（群衜）。木と同じ数え方です。',
+ 'Añade uno más y tienes 众, multitud. El chino cuenta personas como cuenta árboles.'),
+'好':E('hui',
+ 'A woman and a child.',
+ '一个女人，一个孩子。',
+ '女と子。',
+ 'Una mujer y un niño.',
+ 'The pretty reading is a mother holding her child. Scholars do not actually agree. We are telling you because a lot of apps sell you the pretty version as fact — and the truth is that some characters are three thousand years old and nobody was taking notes.',
+ '好听的那个解释是「母亲抱着孩子」。学界并没有定论。我们特意说明，是因为很多产品会把好听的那个当成事实卖给你 —— 而事实是，有些字已经三千岁了，当时没人做笔记。',
+ '通説は「母が子を抱く」ですが、定説はありません。',
+ 'La lectura bonita es una madre con su hijo. No hay consenso. Algunos caracteres tienen tres mil años y nadie tomaba notas.'),
+'看':E('hui',
+ 'A hand above an eye — the gesture you make to see into the distance.',
+ '手搭在眼睛上方 —— 遮着阳光往远处望的那个动作。',
+ '手を目の上に。遠くを見る仕草です。',
+ 'Una mano sobre el ojo, el gesto de mirar lejos.',
+ 'Look at the oracle-bone 目 above: it is lying down, shaped like an actual eye. Every 目 used to be horizontal. When Chinese started being written in vertical columns, the eye was tipped on its end to fit — and it never lay back down.',
+ '看上面那个甲骨文的「目」：它是横着的，像一只真的眼睛。所有的「目」本来都是横的 —— 后来中文改成竖着写，眼睛为了塞进竖行被立了起来，从此再没躺回去。',
+ '上の甲骨文の「目」は横向き、本物の目の形です。縦書きに合わせて立てられました。',
+ 'Mira el 目 oracular: está tumbado, como un ojo real. Se puso de pie para caber en la columna vertical.'),
+'问':E('xing',
+ 'Careful — 门 here is not a door. It is the sound. mén gives you wèn; only 口 mouth carries the meaning.',
+ '注意 —— 这里的「门」不表示门，表示读音。mén 给出 wèn；只有「口」管意思。',
+ '注意：ここの「门」は意味ではなく音（mén → wèn）です。',
+ 'Ojo: 门 no es puerta, es el sonido. Solo 口 aporta significado.',
+ 'About 80% of Chinese characters work like this: half for meaning, half for sound. English does it too — the ph in phone tells you nothing about telephones, it just says "this word came from Greek, pronounce it /f/". Anyone who tells you every character is a little picture is selling you something.',
+ '大约 80% 的汉字都是这么造的：一半管意思，一半管声音。英语也干同样的事 —— phone 里的 ph 完全不告诉你电话是什么，它只是在说「这个词来自希腊语，读 /f/」。谁要是告诉你每个汉字都是一幅画，那是在卖东西给你。',
+ '漢字の約80%がこの方式です。英語の phone の ph も同じで、意味ではなく音の印です。',
+ 'Cerca del 80% funciona así. El inglés hace igual: el ph de phone solo dice "vino del griego, suénalo /f/".'),
+'闻':E('xing',
+ 'Same trick as 问. 耳 ear carries the meaning; 门 only supplies the sound, mén → wén.',
+ '和「问」一个套路。「耳」管意思，「门」只提供读音 mén → wén。',
+ '「问」と同じ仕組みです。',
+ 'El mismo truco que 问.',
+ 'This character drifted. It used to mean hear, and still does inside 新闻, news — literally new-things-heard. On its own it now usually means to smell. English did the same to smart: it meant painful for centuries before it meant clever.',
+ '这个字的意思漂移过：本义是「听」，「新闻」里还是这个意思 —— 字面就是「新听到的事」。但单用的时候，现代汉语里通常是「嗅」。英语的 smart 也一样 —— 它先当了好几个世纪的「疼」，才变成「聪明」。',
+ '意味が移りました。本義は「聞く」で「新闻」に残り、単独では今は「嗅ぐ」です。',
+ 'Antes significaba oír, y sigue así en 新闻 (noticias). Solo, hoy suele ser oler.'),
+'闯':E('hui',
+ 'A horse coming out through a gate. This one really is a picture.',
+ '一匹马从门里冲出来。这个字是真的画面。',
+ '門から馬が飛び出す。これは本当に絵です。',
+ 'Un caballo saliendo por la puerta. Este sí es un dibujo.',
+ 'Three characters, same 门: in 问 and 闻 it is only a sound, in 闯 it is the meaning. That is the whole difficulty of Chinese in one gate — you cannot tell which job a part is doing until you know the word. The oldest dictionary, from the year 121, defines 闯 in five words: "the look of a horse leaving a gate".',
+ '三个字都带「门」：问、闻 里它只是个声音，闯 里它是意思。中文的全部难处就在这扇门里 —— 在你认识这个词之前，你看不出部件在干哪份工。公元 121 年的《说文解字》给「闯」的解释只有四个字：「马出门貌」。',
+ '同じ「门」でも、问・闻 は音、闯 は意味。121年の辞書は「馬出門貌」と定義します。',
+ 'Tres caracteres, el mismo 门: en 问 y 闻 es sonido; en 闯, significado. El diccionario del año 121 lo define en cinco palabras.')};
+
+
+var OBS='stroke="currentColor" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"';
+var OB={
+'木':'<path d="M12 3v18M12 9c-2.5-.6-4.6-2.4-5.8-4.6M12 9c2.5-.6 4.6-2.4 5.8-4.6M12 15c-2.4.8-4.3 2.7-5.3 5.1M12 15c2.4.8 4.3 2.7 5.3 5.1" '+OBS+'/>',
+'人':'<path d="M14.5 3.2c-.4 4-1.5 6.6-3.4 8.4M11.1 11.6 7 21M11.1 11.6 15 19.4" '+OBS+'/>',
+'目':'<path d="M3 12c3.6-4.6 14.4-4.6 18 0-3.6 4.6-14.4 4.6-18 0z" '+OBS+'/><circle cx="12" cy="12" r="2.3" fill="currentColor"/>',
+'山':'<path d="M2 20h20M12 20V5.5M12 8.5 8.6 11M12 8.5 15.4 11M7 20v-9M7 12.5 4.8 14.6M17 20v-9M17 12.5l2.2 2.1" '+OBS+'/>',
+'火':'<path d="M12 3c1.6 3.2 2 5 2 6.5 0 2.4-3.5 2.4-3.5 0C10.5 8 11 6.2 12 3z" '+OBS+'/><path d="M12 10.5 12 21M12 14c-2-1.4-3.4-3-4.2-4.9M12 14c2-1.4 3.4-3 4.2-4.9" '+OBS+'/>',
+'水':'<path d="M12 2.5c-1.4 3.4-1.4 6.2 0 9 1.4 2.8 1.4 5.6 0 10" '+OBS+'/><path d="M7.4 6.4c-.9 1.5-1 3 .2 4.2M6.6 14c-.9 1.5-1 3 .2 4.2M16.6 6.4c.9 1.5 1 3-.2 4.2M17.4 14c.9 1.5 1 3-.2 4.2" '+OBS+'/>',
+'日':'<ellipse cx="12" cy="12" rx="8" ry="9" '+OBS+'/><circle cx="12" cy="12" r="1.8" fill="currentColor"/>',
+'月':'<path d="M15.5 2.5c-4.2 3-4.2 16 0 19-6.6-1.6-9.8-6-9.8-9.5s3.2-7.9 9.8-9.5z" '+OBS+'/><path d="M11 9.5h3M11 14.5h3" '+OBS+'/>',
+'口':'<path d="M4.5 8.5c3-2.5 12-2.5 15 0-1.5 6-13.5 6-15 0z" '+OBS+'/>',
+'女':'<path d="M12 3.6c-2.4 1.4-3.4 3.6-3 6.2M9 9.8c-1.3 3.4-.6 6.6 2 9.4M11 19.2c2.6-1 4.4-3 5.4-6M4.6 14.4c4.6 2.4 9.6 2.4 15 0" '+OBS+'/>',
+'子':'<path d="M12 3.2c2.6 0 4 1.6 4 3.4S14.6 10 12 10 8 8.4 8 6.6 9.4 3.2 12 3.2z" '+OBS+'/><path d="M12 10v11M5.5 13.5c4.4-2 8.6-2 13 0" '+OBS+'/>',
+'手':'<path d="M12 21V8.5M12 12.5c-2.4-.8-4.2-2.4-5.2-4.6M12 12.5c2.4-.8 4.2-2.4 5.2-4.6M12 8.5c-1.6-1.4-2.6-3-3-4.9M12 8.5c1.6-1.4 2.6-3 3-4.9" '+OBS+'/>',
+'门':'<path d="M3 4v17M21 4v17M3 4h6.5M21 4h-6.5M3.5 10h6M20.5 10h-6" '+OBS+'/>',
+'马':'<path d="M6 21c-.6-5 .6-8.6 3.6-10.8 2-1.5 3.4-3.4 4.2-5.7 1.6 1.2 2.6 2.9 3 5.1" '+OBS+'/><path d="M13.8 4.5c1.8-.4 3.2.2 4.2 1.8M9.6 10.2c2.6 1.2 4.4 3.2 5.4 6M11 16.5c1 1.6 1.4 3.1 1.2 4.5M17 12.5c.8 2.6.6 5.4-.6 8.5" '+OBS+'/>'};
+function obOf(ch){return OB[ch]?'<svg class="ob" viewBox="0 0 24 24" aria-hidden="true">'+OB[ch]+'</svg>':'<span class="ob-x"></span>';}
+
+var lang='en',t=L.en,LI={en:1,zh:2,ja:3,es:4};
+try{var sv=localStorage.getItem('hz-lang');if(sv&&L[sv])lang=sv;else{var nv=(navigator.language||'en').slice(0,2);if(L[nv])lang=nv;}}catch(e){}
+var solved={},ci=0,qi=0,sel=[],tries=[],over=false,shown=0;
+function q(id){return document.getElementById(id);}
+var DIFF={'明':1,'炎':1,'林':1,'森':2,'尘':2,'泪':2,'尖':3,'火山':1,'森林':1,'山水':2,'明月':2,'尘土':2,'明日':3,'看':1,'休':2,'从':2,'好':2,'闯':2,'问':3,'闻':3,'大人':1,'好人':1,'口水':2,'泪水':2,'人口':3,'小心':3,'日子':3,'火车':2,'河马':2,'松鼠':2,'熊猫':2,'火鸡':2,'电脑':2,'冰箱':2,'银河':3,'电影':3,'袋鼠':3,'海豚':3,'眼镜':3,'地铁':3,'口红':3};
+function dOf(p){return DIFF[p.w]||2;}
+function nTiles(p){return dOf(p)===1?4:(dOf(p)===2?6:8);}
+function chQ(c){return Q.filter(function(x){return x.c===c;}).slice().sort(function(a,b){return dOf(a)-dOf(b);});}
+function chDone(c){return chQ(c).every(function(x){return solved[x.w];});}
+function chLabel(c){var h=CH[c];return t.chap+' '+(c+1)+' · '+h.t[lang]+' · '+(h.k==='char'?t.kchar:t.kword);}
+function known(){var o={};Q.forEach(function(x){if(solved[x.w])o[x.w]=1;});return o;}
+function rnd(seed){var x=seed*9301%233280;return function(){x=(x*9301+49297)%233280;return x/233280;};}
+function tilesFor(p,idx){
+  var N=nTiles(p);
+  if(p.t)return shuffle(p.t.slice(0,N),idx);
+  var pool=CH[p.c].pool.concat(Object.keys(known())),out=[p.a];
+  if(p.b!==p.a)out.push(p.b);
+  var r=rnd(idx+7),cand=pool.filter(function(x){return out.indexOf(x)<0;});
+  while(out.length<N&&cand.length){var j=Math.floor(r()*cand.length);out.push(cand.splice(j,1)[0]);}
+  return shuffle(out,idx);}
+function shuffle(arr,seed){var a=arr.slice(),r=rnd(seed+13);
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var m=a[i];a[i]=a[j];a[j]=m;}return a;}
+function gloss(ch){var g=B[ch],py=(lang==='zh'||lang==='ja');
+  if(g)return py?g[5]:g[LI[lang]];
+  for(var i=0;i<Q.length;i++)if(Q[i].w===ch)return py?Q[i].py:Q[i].q.en;return '';}
+function mark(ch){var g=B[ch];
+  if(g&&g[0])return '<span class="em">'+g[0]+'</span>';
+  if(IC[ch])return '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true">'+IC[ch]+'</svg>';
+  for(var i=0;i<Q.length;i++)if(Q[i].w===ch){var c=Q[i].ic;
+    if(c.charAt(0)==='§')return '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true">'+(IC[c.slice(1)]||'')+'</svg>';
+    return '<span class="em">'+c+'</span>';}
+  return '<span class="em"></span>';}
+function face(ch){return mark(ch)+'<span class="gl'+(ch.length>1?' w':'')+'">'+ch+'</span><span class="gs">'+gloss(ch)+'</span>';}
+function toast(m){var e=q('toast');e.textContent=m;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on');},1700);}
+function copy(txt){var d=function(){toast(t.copied);};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(d,function(){fb(txt,d);});else fb(txt,d);}
+function fb(txt,cb){var a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;top:0;opacity:0';
+  document.body.appendChild(a);a.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(a);}
+
+function cur(){return chQ(ci)[qi];}
+function firstUnsolved(c){var list=chQ(c);for(var i=0;i<list.length;i++)if(!solved[list[i].w])return i;return 0;}
+function load(){
+  var p=cur();sel=[];tries=[];over=false;shown=0;
+  var d=dOf(p),dots='';for(var i=1;i<=3;i++)dots+='<i class="dot'+(i<=d?' on':'')+'"></i>';
+  q('lv').innerHTML=chLabel(ci)+'<span class="dots" title="'+t.diff[d-1]+'">'+dots+'</span>';
+  q('sub').textContent=CH[ci].k==='char'?t.tchar:t.tword;
+  q('target').textContent=lang==='es'?p.q.es:p.q.en;
+  q('rows').innerHTML='';q('result').innerHTML='';q('check').disabled=false;
+  q('check').textContent=t.check;q('hintb').style.display='none';
+  var tray=q('tray');tray.innerHTML='';
+  tilesFor(p,ci*100+qi).forEach(function(ch){
+    var b=document.createElement('button');b.innerHTML=face(ch);
+    b.onclick=function(){if(over||sel.length>=2)return;sel.push(ch);slots();};
+    tray.appendChild(b);});
+  slots();progress();}
+function slots(){[0,1].forEach(function(i){var e=q('s'+i);e.innerHTML=sel[i]?face(sel[i]):'';
+  e.onclick=function(){if(over||!sel[i])return;sel.splice(i,1);slots();};});}
+function progress(){
+  var list=chQ(ci),n=list.filter(function(x){return solved[x.w];}).length;
+  q('cnt').textContent=n;q('tot').textContent=list.length;
+  q('bar').style.width=Math.round(n/list.length*100)+'%';
+  drawColl();drawStrip();}
+function drawColl(){var g=q('coll');g.innerHTML='';
+  chQ(ci).forEach(function(p){var d=document.createElement('div');
+    if(solved[p.w]){d.textContent=p.w;d.className='got'+(p.w.length>1?' w':'')+(p.w===justSolved?' pop':'');}
+    else{d.textContent='？';d.className='lock';}
+    g.appendChild(d);});}
+function drawStrip(){var st=q('strip');st.innerHTML='';
+  CH.forEach(function(h,i){var d=document.createElement('div');
+    d.className='chip'+(i===ci?' now':'')+(chDone(i)?' ok':'');
+    d.textContent=i+1;d.title=chLabel(i);
+    if(i<=ci||chDone(i-1)){d.style.cursor='pointer';d.onclick=function(){goCh(i);};}
+    st.appendChild(d);});}
+var justSolved=null;
+function goCh(c){ci=c;qi=firstUnsolved(c);q('donebox').innerHTML='';load();window.scrollTo(0,0);}
+
+function check(){
+  if(over||sel.length<2)return;
+  var p=cur(),need=[p.a,p.b].slice(),hit=0;
+  sel.forEach(function(c){var k=need.indexOf(c);if(k>-1){need.splice(k,1);hit++;}});
+  var kls=hit===2?'g':(hit===1?'a':'n'),lab=hit===2?t.kg:(hit===1?t.kh:t.kn);
+  tries.push(hit===2?'🟩':(hit===1?'🟨':'⬜'));
+  var r=document.createElement('div');r.className='row';
+  r.innerHTML='<span class="gt '+kls+'">'+sel[0]+'</span><span class="gt '+kls+'">'+sel[1]+'</span><span class="rl '+kls+'">'+lab+'</span>';
+  q('rows').appendChild(r);
+  sel=[];slots();
+  if(hit===2)finish(true);
+  else if(tries.length>=6)finish(false);
+  else{if(tries.length>=3)q('hintb').style.display='inline-block';
+    if(!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      var bd=q('rows');bd.classList.add('shake');setTimeout(function(){bd.classList.remove('shake');},320);}}}
+function hint(){var p=cur();shown=1;q('hintb').style.display='none';
+  var d=document.createElement('div');d.className='rl';d.style.padding='2px 0 2px 4px';
+  d.innerHTML=t.hint+'：<b style="font-family:var(--f-han);font-size:18px">'+p.a+'</b> ('+gloss(p.a)+')';
+  q('rows').appendChild(d);}
+function finish(win){
+  over=true;q('check').disabled=true;
+  var p=cur(),isNew=!solved[p.w];
+  if(win){solved[p.w]=1;justSolved=isNew?p.w:null;}
+  var head=win?t.solvedIt.replace('{n}',tries.length):t.failedIt;
+  var last=win&&chDone(ci);
+  var e=EX[p.w],body=e?e.s[lang]:p.s[lang],tag=TY[e?e.k:'ci'][lang];
+  q('result').innerHTML='<div class="card'+(win?'':' miss')+'">'
+    +'<div class="hd"><em>'+p.w+'</em><i>'+p.py+' · '+(lang==='es'?p.q.es:p.q.en)+'</i><span class="tag">'+tag+'</span></div>'
+    +'<div class="split">'
+      +'<div class="pt">'+obOf(p.a)+'<b>'+p.a+'</b><span>'+gloss(p.a)+'</span></div>'
+      +'<span class="op">＋</span>'
+      +'<div class="pt">'+obOf(p.b)+'<b>'+p.b+'</b><span>'+gloss(p.b)+'</span></div></div>'
+    +((OB[p.a]||OB[p.b])?'<div class="obl">'+t.oracle+'</div>':'')
+    +'<div class="bd">'+body+'</div>'
+    +(e?'<div class="lore"><span class="lk">'+t.lore+'</span>'+e.x[lang]+'</div>':'')
+    +'<div class="share">字 '+head+'<br>'+tries.join('')+'</div>'
+    +(last?'':'<button class="btn" id="nx">'+t.next+'</button> ')+'<button class="btn ghost" id="sh">'+t.share+'</button></div>';
+  q('sh').onclick=function(){copy('字 · Hanzi\n'+(lang==='es'?p.q.es:p.q.en)+' → '+p.w+'\n'+tries.join('')+'\n'+location.href);};
+  if(!last)q('nx').onclick=next;
+  progress();justSolved=null;
+  if(chDone(ci))setTimeout(chComplete,260);}
+function next(){
+  var list=chQ(ci),k=qi;
+  for(var i=1;i<=list.length;i++){var j=(qi+i)%list.length;if(!solved[list[j].w]){k=j;break;}}
+  if(k===qi&&solved[list[qi].w]){if(ci<CH.length-1&&chDone(ci)){goCh(ci+1);return;}}
+  qi=k;load();window.scrollTo(0,0);}
+function chComplete(){
+  var last=ci>=CH.length-1;
+  q('donebox').innerHTML='<div class="done"><h3>'+(last?t.dtitle:t.chDone)+'</h3><p>'+(last?t.dbody:chLabel(ci))+'</p>'
+    +(last?'<button class="btn" id="allshare">'+t.share+'</button>':'<button class="btn" id="cn">'+t.chNext+' · '+CH[ci+1].t[lang]+'</button>')+'</div>';
+  if(last)q('allshare').onclick=function(){var g='';Q.forEach(function(x,i){g+='🟩';if((i+1)%7===0&&i+1<Q.length)g+='\n';});
+    copy('字 · Hanzi\n'+t.dtitle+'\n'+g+'\n'+location.href);};
+  else q('cn').onclick=function(){goCh(ci+1);};
+  window.scrollTo(0,0);}
+
+function applyLang(){t=L[lang];document.documentElement.lang=lang;
+  q('i-h').textContent=t.ih;q('i-p').textContent=t.ip;q('i-btn').textContent=t.ibtn;
+  q('l-build').textContent=t.build;q('l-coll').textContent=t.coll;q('hintb').textContent=t.hintb;
+  q('foot').textContent=t.foot;
+  if(q('game').style.display!=='none')load();}
+q('i-btn').onclick=function(){q('intro').style.display='none';q('game').style.display='block';load();};
+q('check').onclick=check;q('hintb').onclick=hint;
+var ls=q('lang');ls.value=lang;
+ls.onchange=function(){lang=this.value;try{localStorage.setItem('hz-lang',lang);}catch(e){}applyLang();};
+applyLang();
+})();
+</script>
