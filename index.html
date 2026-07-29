@@ -889,6 +889,11 @@ q('sheet').onclick=function(e){if(e.target===this)this.style.display='none';};
 q('m-char').onclick=function(){if(MODE!=='char')setMode('char');};
 q('m-word').onclick=function(){if(MODE!=='word')setMode('word');};
 q('check').onclick=check;q('hintb').onclick=hint;
+(function(){var v=document.querySelector('.bgv');if(!v)return;
+  function go(){if(v.paused){var p=v.play();if(p&&p.catch)p.catch(function(){});}}
+  document.addEventListener('pointerdown',go,{passive:true});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)go();});
+  go();})();
 (function(){var e=q('embers');if(!e)return;
   for(var i=0;i<12;i++){var s=document.createElement('i');
     var sz=2+(i*7)%4;s.style.width=s.style.height=sz+'px';
