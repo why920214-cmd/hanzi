@@ -101,6 +101,11 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
   .hero h1{margin:0 0 var(--s2);font-size:var(--t-2xl);font-weight:500;line-height:1.35;text-wrap:balance;
     font-family:var(--f-clue);font-style:italic;color:var(--ink)}
   .hero p{margin:0 auto;max-width:34ch;color:var(--ink-2)}
+  .in-lang{display:flex;gap:24px;justify-content:center;margin:4px 0 40px}
+  .in-lang button{background:none;border:0;padding:2px 0;font-family:var(--f-ui);font-size:var(--t-sm);
+    color:var(--ink-3);cursor:pointer;letter-spacing:.03em;border-bottom:1px solid transparent}
+  .in-lang button:hover{color:var(--ink)}
+  .in-lang button.on{color:var(--jade);border-bottom-color:var(--jade)}
 
   /* ── 进度 ── */
   .lvl{display:flex;align-items:flex-end;gap:var(--s3);margin:0 2px var(--s2)}
@@ -129,8 +134,8 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
   .coach{background:var(--pane);border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:4px;
     padding:var(--s2) var(--s3);margin-bottom:var(--s3);font-size:var(--t-sm);color:var(--ink-2);line-height:1.65}
   .coach b{color:var(--ink);font-weight:500}
-  .lay3{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;margin-top:8px}
-  .lay3 span{font-size:var(--t-sm);color:var(--ink-2);margin-right:6px}
+  .lay3{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;margin-top:10px}
+  .lay3 span{font-size:var(--t-sm);color:var(--ink-2)}
   .keys{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:6px}
   .key{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-sm);color:var(--ink-2)}
   .key i{width:16px;height:16px;flex:none;border-radius:3px;border:1px solid transparent}
@@ -145,9 +150,16 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
     padding:var(--s4);width:100%;max-width:480px;max-height:80vh;overflow-y:auto;
     box-shadow:0 -20px 60px rgba(0,0,0,.5)}
   .sheetin h3{margin:0 0 var(--s3);font-size:var(--t-xl);font-weight:500;color:var(--jadeHi)}
-  .sheetin ol{margin:0 0 var(--s3);padding-left:20px;color:var(--ink-2);font-size:var(--t-sm);line-height:1.8}
+  .sheetin ol{margin:0 0 var(--s4);padding-left:20px;color:var(--ink-2);font-size:var(--t-sm);line-height:1.75}
+  .sheetin ol li{margin-bottom:9px}
   .sheetin li b{color:var(--ink);font-weight:500}
-  .sheetin .btn{width:100%}
+  .sheetin .keys{margin:0 0 var(--s2)}
+  .sheetin .btn{width:100%;margin-top:var(--s4)}
+  @media (min-width:700px){
+    .sheet{align-items:center;padding:24px}
+    .sheetin{max-width:540px;border-radius:16px;border:1px solid var(--line-2);padding:30px 34px;
+      box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  }
 
   /* ── 猜测行 ── */
   .rows{display:flex;flex-direction:column;gap:5px;margin-bottom:var(--s3);min-height:4px}
@@ -179,15 +191,18 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
   .op{font-size:16px;color:var(--ink-3)}
   .cell{width:70px;height:70px;flex:none;position:relative;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:1px;cursor:pointer;background:var(--pane);
-    border:1px dashed var(--line-2);padding:0;font-family:inherit;color:inherit;border-radius:4px;z-index:1}
+    border:1px dashed var(--line-2);padding:0;font-family:inherit;color:inherit;border-radius:4px;z-index:1;overflow:hidden}
   .cell::before,.cell::after{content:"";position:absolute;background:var(--line-2);opacity:.4}
   .cell::before{left:9px;right:9px;top:50%;height:1px}
   .cell::after{top:9px;bottom:9px;left:50%;width:1px}
   .cell>*{position:relative;z-index:1}
   .go{display:block;width:100%;margin-bottom:var(--s4)}
 
-  .em{font-size:12px;line-height:1;height:13px}
-  .ic{width:13px;height:13px;display:block;color:var(--ink-3)}
+  .tk-mk{position:absolute;right:-7px;bottom:-9px;font-size:44px;line-height:1;opacity:.13;
+    filter:grayscale(1);pointer-events:none;user-select:none}
+  .tk-mk .ic{width:42px;height:42px;display:block;color:var(--jadeHi)}
+  .tk-mk.mk-svg{filter:none;opacity:.16}
+  .py2{font-size:10px;line-height:1.3;color:var(--ink-3);letter-spacing:.05em;position:relative;z-index:1}
   .gl{font-family:var(--f-han);font-size:29px;line-height:1.2;color:var(--ink)}
   .gl.w{font-size:20px}
   .gs{font-size:9.5px;line-height:1.2;color:var(--ink-3);max-width:100%;padding:0 2px;
@@ -195,7 +210,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
 
   /* ── 牌堆 ── */
   .tray{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-  .tray button{height:74px;padding:4px 2px;border-radius:10px;cursor:pointer;font-family:inherit;color:inherit;
+  .tray button{height:82px;padding:5px 3px;position:relative;border-radius:10px;cursor:pointer;font-family:inherit;color:inherit;
     background:linear-gradient(170deg,#15241f,#0c1613);
     border:1px solid rgba(198,234,214,.16);
     box-shadow:0 6px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(46,107,82,.35), inset 0 1px 0 rgba(198,234,214,.12);
@@ -418,7 +433,11 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
     <div id="intro">
       <div class="in-mark"><span class="in-seal">谶</span><span class="in-en">Omen · read the characters</span></div>
       <div class="hero"><h1 id="i-h"></h1><p id="i-p"></p></div>
-      <div class="in-go" style="text-align:center;margin-bottom:var(--s5)"><button class="btn" id="i-btn"></button></div>
+      <div class="in-go" style="text-align:center;margin-bottom:var(--s3)"><button class="btn" id="i-btn"></button></div>
+      <div class="in-lang" id="in-lang">
+        <button data-l="en">English</button><button data-l="zh">中文</button>
+        <button data-l="ja">日本語</button><button data-l="es">Español</button>
+      </div>
     </div>
 
     <div id="game" style="display:none">
@@ -480,10 +499,10 @@ en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find
  dtitle:'You solved all 41.',dbody:'That is the whole prototype. The real thing keeps going — the same few dozen parts build thousands of actual Chinese words.',
  solvedIt:'Solved in {n}',failedIt:'Out of tries',
  foot:'Prototype · 5 chapters · 41 puzzles'},
-zh:{ih:'中文的词，是拼出来的。',ip:'我们给你一个意思，你找出组成它的两块。两种玩法：猜字，或者猜词。',ibtn:'开始',
+zh:{ih:'中文的词，是拼出来的。',ip:'每道题给你一个含义，你从牌里挑出两块，拼成对应的字或词。不认识汉字也能玩——凭直觉猜。',ibtn:'开始',
  build:'拼出这个',check:'检查',next:'下一题',share:'分享',copied:'已复制',hintb:'提示',hint:'提示',
  kg:'两块都对',kh:'对了一块',kn:'都不对',nu:'新',coll:'已解开',chap:'第',lore:'字源',oracle:'甲骨文字形 · 约公元前 1200 年',
- kchar:'造字',kword:'造词',diff:['简单','中等','高级'],mchar:'猜字',mword:'猜词',tchar2:'部件 → 字',tword2:'字 → 词',mDone:'{m} 全部完成。',tryOther:'去玩另一种',aChar:'汉字',aWord:'词',stampNew:'新',stampOk:'对',stampNo:'惜',cheerNew:'你解开了一个新{k}',cheerAgain:'又对了一次',cheerFail:'六次用完了',cheerFailSub:'答案还是给你。',coach1:'点下面<b>两块积木</b>，然后按<b>检查</b>。不用懂中文 —— 猜就行。',coach2:'这就是你会拿到的反馈。每题六次机会。',rulesH:'怎么玩',r1:'给你一个<b>意思</b>，找出拼成它的<b>两块</b>。',r2:'点两块，然后按<b>检查</b>。<b>六次机会</b>。',r3:'每次答对，都会告诉你这个字是怎么来的。',close:'知道了',lay:{lr:'左右并排',tb:'上下叠放',en:'一个包住另一个'},coach3:'上面的格子会告诉你这一题是哪种排法。这是真规则 —— 每个汉字都要装进同一个方块里。',r4:'两块要共用<b>同一个方块</b>。格子会告诉你它们怎么摆。',hintOb:'其中一块，三千年前长这样。',hintName:'它是',hintb2:'还是想不出',tchar:'两个部件 → 一个字',tword:'两个字 → 一个词',
+ kchar:'造字',kword:'造词',diff:['简单','中等','高级'],mchar:'猜字',mword:'猜词',tchar2:'部件 → 字',tword2:'字 → 词',mDone:'{m} 全部完成。',tryOther:'去玩另一种',aChar:'汉字',aWord:'词',stampNew:'新',stampOk:'对',stampNo:'惜',cheerNew:'你解开了一个新{k}',cheerAgain:'又对了一次',cheerFail:'六次用完了',cheerFailSub:'答案还是给你。',coach1:'从下面挑<b>两块牌</b>，按<b>检查</b>。不认识汉字没关系——凭感觉猜。',coach2:'这些颜色就是每次猜完的反馈。每题六次机会。',rulesH:'怎么玩',r1:'每道题给出一个<b>含义</b>，从牌里挑出拼成它的<b>两块</b>。',r2:'选两块，按<b>检查</b>。每题<b>六次</b>机会。',r3:'每答对一题，解锁这个字的来历。',close:'知道了',lay:{lr:'左右并排',tb:'上下叠放',en:'一个包住另一个'},coach3:'上方的小图标提示这一题的结构。这是汉字的真实规则——两个部件要装进同一个方格。',r4:'两块要放进<b>同一个方格</b>——左右、上下，或一个包住另一个。',hintOb:'其中一块，三千年前长这样。',hintName:'它是',hintb2:'还是想不出',tchar:'两个部件 → 一个字',tword:'两个字 → 一个词',
  chDone:'本章完成',chNext:'下一章',
  dtitle:'41 题全解开了。',dbody:'这个原型里就这些。真正的版本会一直下去 —— 同样这几十块，能拼出几千个真实存在的中文词。',
  solvedIt:'{n} 次猜中',failedIt:'次数用完了',
@@ -655,13 +674,20 @@ function gloss(ch){var g=B[ch],py=(lang==='zh'||lang==='ja');
   if(g)return py?g[5]:g[LI[lang]];
   for(var i=0;i<Q.length;i++)if(Q[i].w===ch)return py?Q[i].py:Q[i].q.en;return '';}
 function mark(ch){var g=B[ch];
-  if(g&&g[0])return '<span class="em">'+g[0]+'</span>';
-  if(IC[ch])return '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true">'+IC[ch]+'</svg>';
+  if(g&&g[0])return '<span class="tk-mk">'+g[0]+'</span>';
+  if(IC[ch])return '<span class="tk-mk mk-svg"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true">'+IC[ch]+'</svg></span>';
   for(var i=0;i<Q.length;i++)if(Q[i].w===ch){var c=Q[i].ic;
-    if(c.charAt(0)==='§')return '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true">'+(IC[c.slice(1)]||'')+'</svg>';
-    return '<span class="em">'+c+'</span>';}
-  return '<span class="em"></span>';}
-function face(ch){return mark(ch)+'<span class="gl'+(ch.length>1?' w':'')+'">'+ch+'</span><span class="gs">'+gloss(ch)+'</span>';}
+    if(c.charAt(0)==='§')return '<span class="tk-mk mk-svg"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true">'+(IC[c.slice(1)]||'')+'</svg></span>';
+    return '<span class="tk-mk">'+c+'</span>';}
+  return '';}
+function pyOf(ch){var g=B[ch];if(g)return g[5];
+  for(var i=0;i<Q.length;i++)if(Q[i].w===ch)return Q[i].py;return '';}
+function meanOf(ch){var g=B[ch];if(g)return g[LI[lang]]||'';
+  for(var i=0;i<Q.length;i++)if(Q[i].w===ch)return lang==='es'?Q[i].q.es:Q[i].q.en;return '';}
+function face(ch){var m=(lang==='en'||lang==='es')?meanOf(ch):'';
+  return mark(ch)+'<span class="py2">'+pyOf(ch)+'</span>'
+    +'<span class="gl'+(ch.length>1?' w':'')+'">'+ch+'</span>'
+    +(m?'<span class="gs">'+m+'</span>':'');}
 function toast(m){var e=q('toast');e.textContent=m;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on');},1700);}
 function copy(txt){var d=function(){toast(t.copied);};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(d,function(){fb(txt,d);});else fb(txt,d);}
@@ -841,7 +867,14 @@ q('check').onclick=check;q('hintb').onclick=hint;
     s.style.animationDelay=(-((i*29)%140)/10)+'s';
     e.appendChild(s);}})();
 var ls=q('lang');ls.value=lang;
-ls.onchange=function(){lang=this.value;try{localStorage.setItem('hz-lang',lang);}catch(e){}applyLang();};
+ls.onchange=function(){lang=this.value;try{localStorage.setItem('hz-lang',lang);}catch(e){}applyLang();paintInLang();};
+function paintInLang(){var w=q('in-lang');if(!w)return;
+  [].forEach.call(w.querySelectorAll('button'),function(x){x.className=x.getAttribute('data-l')===lang?'on':'';});}
+(function(){var w=q('in-lang');if(!w)return;
+  [].forEach.call(w.querySelectorAll('button'),function(b){b.onclick=function(){
+    lang=b.getAttribute('data-l');try{localStorage.setItem('hz-lang',lang);}catch(e){}
+    ls.value=lang;applyLang();paintInLang();};});
+  paintInLang();})();
 applyLang();
 })();
 </script>
