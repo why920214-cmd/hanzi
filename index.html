@@ -109,9 +109,15 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
     radial-gradient(4px 3px at 20% 88%, rgba(8,21,18,.45) 40%, transparent 60%)}
   .in-en{display:block;margin-top:16px;font-size:12px;letter-spacing:.55em;color:var(--gold);text-transform:uppercase}
   .hero{text-align:center;padding:var(--s4) 0}
-  .hero h1{margin:0 0 var(--s2);font-size:var(--t-2xl);font-weight:500;line-height:1.35;text-wrap:balance;
+  .hero h1{margin:0 0 var(--s3);font-size:30px;font-weight:500;line-height:1.4;text-wrap:balance;
     font-family:var(--f-clue);font-style:italic;color:var(--ink)}
-  .hero p{margin:0 auto;max-width:34ch;color:var(--ink-2)}
+  .hero h1.lit{
+    background:linear-gradient(105deg,var(--ink) 0%,var(--ink) 38%,var(--goldHi) 47%,var(--jadeHi) 53%,var(--ink) 62%,var(--ink) 100%);
+    background-size:230% 100%;background-position:120% 0;
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  html[lang="zh"] .hero h1,html[lang="ja"] .hero h1{
+    font-family:var(--f-han);font-weight:900;font-style:normal;font-size:27px;letter-spacing:.1em}
+  .hero p{margin:0 auto;max-width:36ch;color:var(--ink-2);font-size:14.5px;line-height:1.9}
   .in-lang{display:flex;gap:24px;justify-content:center;margin:4px 0 40px}
   .in-lang button{background:none;border:0;padding:2px 0;font-family:var(--f-ui);font-size:var(--t-sm);
     color:var(--ink-3);cursor:pointer;letter-spacing:.03em;border-bottom:1px solid transparent}
@@ -140,6 +146,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
     font-family:var(--f-clue);font-style:italic;color:var(--ink)}
   .quiz .sub{font-size:var(--t-sm);color:var(--ink-3);margin-top:6px;letter-spacing:.06em}
   .mw{display:inline-block}
+  .hw{display:inline-block}
 
   /* ── 教学 ── */
   .coach{background:var(--pane);border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:4px;
@@ -209,10 +216,10 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
   .cell>*{position:relative;z-index:1}
   .go{display:block;width:100%;margin-bottom:var(--s4)}
 
-  .tk-mk{position:absolute;right:-7px;bottom:-9px;font-size:44px;line-height:1;opacity:.13;
-    filter:grayscale(1);pointer-events:none;user-select:none}
-  .tk-mk .ic{width:42px;height:42px;display:block;color:var(--jadeHi)}
-  .tk-mk.mk-svg{filter:none;opacity:.16}
+  .tk-mk{position:absolute;right:-4px;bottom:-6px;font-size:46px;line-height:1;opacity:.26;
+    filter:grayscale(1) brightness(1.55);pointer-events:none;user-select:none}
+  .tk-mk .ic{width:44px;height:44px;display:block;color:var(--jadeHi)}
+  .tk-mk.mk-svg{filter:none;opacity:.22}
   .py2{font-size:10px;line-height:1.3;color:var(--ink-3);letter-spacing:.05em;position:relative;z-index:1}
   .gl{font-family:var(--f-han);font-size:29px;line-height:1.2;color:var(--ink)}
   .gl.w{font-size:20px}
@@ -376,11 +383,19 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
       100%{transform:translate(calc(var(--sway) * -0.6),-88vh) scale(.4);opacity:0}}
     .in-seal{animation:sealin .7s var(--ease) both}
     @keyframes sealin{0%{transform:rotate(-24deg) scale(2.6);opacity:0}60%{transform:rotate(-4deg) scale(.94);opacity:1}100%{transform:rotate(-4deg) scale(1)}}
-    .hero h1{animation:rise2 .6s .15s var(--ease) both}
-    .hero p{animation:rise2 .6s .28s var(--ease) both}
-    .in-go .btn{animation:rise2 .6s .4s var(--ease) both}
+    .in-en{animation:trackin 1.3s .35s var(--ease) both}
+    @keyframes trackin{from{letter-spacing:1em;opacity:0;filter:blur(3px)}to{letter-spacing:.55em;opacity:1;filter:none}}
+    .hero h1.lit{animation:sheen 8s .4s ease-in-out infinite}
+    @keyframes sheen{0%{background-position:120% 0}55%{background-position:-110% 0}100%{background-position:-110% 0}}
+    .hero p{animation:rise2 .6s .5s var(--ease) both}
+    .in-go .btn{animation:rise2 .6s .65s var(--ease) both}
     .mw{animation:mwin .55s var(--ease) both}
     @keyframes mwin{from{opacity:0;transform:translateY(9px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+    .hw{animation:converge .95s var(--ease) both}
+    @keyframes converge{
+      0%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rt)) scale(1.5);filter:blur(7px)}
+      72%{opacity:1;filter:blur(0)}
+      100%{transform:none;opacity:1}}
     #puzzle.enter .quiz{animation:rise2 .45s var(--ease) both}
     #puzzle.enter .shape{animation:rise2 .45s .07s var(--ease) both}
     #puzzle.enter .board{animation:rise2 .45s .12s var(--ease) both}
@@ -722,6 +737,17 @@ function fb(txt,cb){var a=document.createElement('textarea');a.value=txt;a.style
   document.body.appendChild(a);a.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(a);}
 
 function cur(){return chQ(ci)[qi];}
+function kinetic(el){var s=el.textContent,cjk=/[　-鿿]/.test(s),h='',last=0;
+  el.classList.remove('lit');
+  (cjk?s.split(''):s.split(/(\s+)/)).forEach(function(w,k){
+    if(!w)return; if(/^\s+$/.test(w)){h+=' ';return;}
+    var r=rnd(k+41),dx=Math.round((r()-.5)*100),dy=Math.round((r()-.5)*70),rt=Math.round((r()-.5)*44);
+    last=160+k*70;
+    h+='<span class="hw" style="--dx:'+dx+'px;--dy:'+dy+'px;--rt:'+rt+'deg;animation-delay:'+last+'ms">'
+      +w.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span>';});
+  el.innerHTML=h;
+  clearTimeout(el._lt);
+  el._lt=setTimeout(function(){el.textContent=s;el.classList.add('lit');},last+1050);}
 function motionClue(el){var s=el.textContent,h='',cjk=/[　-鿿]/.test(s);
   (cjk?s.split(''):s.split(/(\s+)/)).forEach(function(w,k){
     if(!w)return; if(/^\s+$/.test(w)){h+=' ';return;}
@@ -876,7 +902,8 @@ function chComplete(){
   window.scrollTo(0,0);}
 
 function applyLang(){t=L[lang];document.documentElement.lang=lang;
-  q('i-h').textContent=t.ih;q('i-p').textContent=t.ip;q('i-btn').textContent=t.ibtn;
+  q('i-h').textContent=t.ih;kinetic(q('i-h'));
+  q('i-p').textContent=t.ip;q('i-btn').textContent=t.ibtn;
   q('l-build').textContent=t.build;q('l-coll').textContent=t.coll;q('hintb').textContent=t.hintb;
   q('foot').textContent=t.foot;
   if(q('game').style.display!=='none')load();}
