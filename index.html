@@ -66,9 +66,10 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
     background:rgba(8,21,18,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
   .logo{display:flex;align-items:center;gap:11px}
   .logo b.sealogo{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;
-    font-family:var(--f-han);font-weight:900;font-size:20px;color:#f2e3c0;
-    background:linear-gradient(160deg,#c0392b,#96271c);border-radius:4px;transform:rotate(-4deg);
-    box-shadow:0 3px 10px rgba(150,39,28,.45), inset 0 1px 0 rgba(242,227,192,.4), inset 0 0 0 1.5px rgba(242,227,192,.25)}
+    font-family:var(--f-han);font-weight:900;font-size:19px;color:#f2e3c0;
+    transform:rotate(-4deg);position:relative;z-index:0}
+  .logo b.sealogo:before{content:"";position:absolute;inset:0;z-index:-1;background:#ad3122;border-radius:2px;
+    filter:url(#chop);box-shadow:inset 0 0 0 1.5px #ad3122, inset 0 0 0 2.5px rgba(242,227,192,.55), inset 0 0 0 8px #ad3122}
   .logo .wm{display:flex;flex-direction:column;line-height:1.35}
   .logo .wm b{font-size:12px;letter-spacing:.4em;color:var(--ink);font-weight:600}
   .logo .wm i{font-style:normal;font-size:8.5px;letter-spacing:.26em;color:var(--ink-3);text-transform:uppercase}
@@ -92,10 +93,17 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
 
   /* ── 开屏 ── */
   .in-mark{text-align:center;padding-top:44px}
-  .in-seal{display:inline-flex;width:76px;height:76px;align-items:center;justify-content:center;
-    font-family:var(--f-han);font-weight:900;font-size:44px;color:#f2e3c0;
-    background:linear-gradient(160deg,#c0392b,#96271c);border-radius:8px;transform:rotate(-4deg);
-    box-shadow:0 10px 30px rgba(150,39,28,.4), inset 0 2px 0 rgba(242,227,192,.4), inset 0 0 0 2px rgba(242,227,192,.25)}
+  .in-seal{display:inline-flex;width:80px;height:80px;align-items:center;justify-content:center;
+    font-family:var(--f-han);font-weight:900;font-size:46px;color:#f2e3c0;
+    transform:rotate(-4deg);position:relative;z-index:0}
+  .in-seal:before{content:"";position:absolute;inset:0;z-index:-1;background:#ad3122;border-radius:3px;
+    filter:url(#chop) drop-shadow(0 10px 26px rgba(150,39,28,.3));
+    box-shadow:inset 0 0 0 3px #ad3122, inset 0 0 0 5px rgba(242,227,192,.55), inset 0 0 0 18px #ad3122}
+  .in-seal:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.6;background:
+    radial-gradient(4px 3px at 12% 20%, rgba(8,21,18,.5) 40%, transparent 60%),
+    radial-gradient(3px 4px at 88% 74%, rgba(8,21,18,.45) 40%, transparent 60%),
+    radial-gradient(3px 3px at 74% 10%, rgba(8,21,18,.4) 40%, transparent 60%),
+    radial-gradient(4px 3px at 20% 88%, rgba(8,21,18,.45) 40%, transparent 60%)}
   .in-en{display:block;margin-top:16px;font-size:12px;letter-spacing:.55em;color:var(--gold);text-transform:uppercase}
   .hero{text-align:center;padding:var(--s4) 0}
   .hero h1{margin:0 0 var(--s2);font-size:var(--t-2xl);font-weight:500;line-height:1.35;text-wrap:balance;
@@ -225,13 +233,16 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
   .rays{position:relative;height:0;z-index:0}
   .rays svg{position:absolute;left:50%;top:150px;width:420px;height:420px;transform:translate(-50%,-50%);pointer-events:none;opacity:0}
   .cheer{text-align:center;padding:var(--s4) 0 var(--s2);position:relative;z-index:1}
-  .cheer .st{display:inline-block;font-family:var(--f-han);font-weight:900;font-size:17px;line-height:1;
-    color:#f2e3c0;background:linear-gradient(160deg,#c0392b,#96271c);border-radius:4px;padding:8px 7px 7px;
-    transform:rotate(-7deg);letter-spacing:.06em;
-    box-shadow:0 4px 14px rgba(150,39,28,.5), inset 0 1px 0 rgba(242,227,192,.4), inset 0 0 0 1.5px rgba(242,227,192,.25)}
+  .cheer .st{display:inline-block;font-family:var(--f-han);font-weight:900;font-size:18px;line-height:1;
+    color:#f2e3c0;padding:9px 8px 8px;
+    transform:rotate(-7deg);letter-spacing:.06em;position:relative;z-index:1}
+  .cheer .st:before{content:"";position:absolute;inset:0;z-index:-1;background:#ad3122;border-radius:2px;
+    filter:url(#chop) drop-shadow(0 4px 12px rgba(150,39,28,.4));
+    box-shadow:inset 0 0 0 1.5px #ad3122, inset 0 0 0 3px rgba(242,227,192,.55), inset 0 0 0 9px #ad3122}
+  .cheer.no .st:before{background:#45544c;
+    box-shadow:inset 0 0 0 1.5px #45544c, inset 0 0 0 3px rgba(220,235,224,.4), inset 0 0 0 9px #45544c}
   .cheer .tx{margin-top:var(--s2);font-size:var(--t-lg);font-weight:500;color:var(--jadeHi);letter-spacing:.04em}
   .cheer .sb{font-size:var(--t-sm);color:var(--ink-3);margin-top:2px}
-  .cheer.no .st{background:linear-gradient(160deg,#4a5a52,#37453e);box-shadow:0 4px 14px rgba(0,0,0,.35), inset 0 0 0 1.5px rgba(220,235,224,.2)}
   .bigw{text-align:center;margin:var(--s2) 0 var(--s3);position:relative;z-index:1}
   .bigw .bg{font-family:var(--f-han);font-weight:900;font-size:96px;line-height:1.08;display:block;
     background:linear-gradient(168deg,var(--goldHi) 12%,var(--gold) 42%,var(--goldLo) 68%,var(--goldHi) 95%);
@@ -404,6 +415,9 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAEsoABAAAAABNtAAAErFAAEAAAAAAAAAAAAAA
 <svg style="position:absolute;width:0;height:0" aria-hidden="true">
   <filter id="inkbleed"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" result="w"/>
   <feDisplacementMap in="SourceGraphic" in2="w" scale="14"/></filter>
+  <filter id="chop" x="-8%" y="-8%" width="116%" height="116%">
+    <feTurbulence type="fractalNoise" baseFrequency=".18 .24" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter>
 </svg>
 <div id="fx" aria-hidden="true">
   <div class="scene"></div>
