@@ -1,0 +1,214 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>字 · 内容审核台</title>
+<style>
+  :root{
+    --bg:#F4F5F4; --card:#fff; --line:#DCE3E5; --line2:#C6D0D3;
+    --ink:#1B1F21; --ink2:#5A646A; --ink3:#939EA3;
+    --seal:#C8452F; --jade:#2E7A6B; --amber:#B07D1E;
+    --han:"Songti SC","STSong","SimSun",serif;
+    --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  }
+  @media(prefers-color-scheme:dark){:root{--bg:#131618;--card:#1A1E21;--line:#2A3033;--line2:#3A4245;--ink:#E8EDEE;--ink2:#9AA5AA;--ink3:#6B767B;--seal:#E0705C;--jade:#5FBEA8;--amber:#D3A044}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--ui)}
+  header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+    padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  h1{margin:0;font-size:17px;font-weight:500}
+  h1 b{font-family:var(--han);color:var(--seal);font-weight:400;margin-right:6px}
+  .grow{flex:1}
+  button,select{font:13px var(--ui);padding:6px 12px;border:1px solid var(--line2);background:var(--card);
+    color:var(--ink);border-radius:3px;cursor:pointer}
+  button.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  main{padding:20px;max-width:1240px;margin:0 auto}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:12px 14px}
+  .stat .n{font-size:24px;font-weight:500;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:12px;color:var(--ink3)}
+  .stat.warn .n{color:var(--seal)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:4px}
+  th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
+    font-weight:500;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  tr.row:hover{background:var(--bg)}
+  .w{font-family:var(--han);font-size:20px;line-height:1.2}
+  .pt{font-family:var(--han);color:var(--ink2)}
+  .clue{color:var(--ink2)}
+  .pill{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid var(--line2);color:var(--ink2);white-space:nowrap}
+  .pill.d1{border-color:var(--jade);color:var(--jade)}
+  .pill.d2{border-color:var(--amber);color:var(--amber)}
+  .pill.d3{border-color:var(--seal);color:var(--seal)}
+  .flag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;margin:1px 3px 1px 0;
+    background:rgba(200,69,47,.12);color:var(--seal);white-space:nowrap}
+  .flag.mi{background:rgba(176,125,30,.14);color:var(--amber)}
+  .flag.gp{background:rgba(46,122,107,.13);color:var(--jade)}
+  .ok{color:var(--jade);font-size:12px}
+  .ed{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+  .ed.on{display:flex}
+  .edin{background:var(--card);border-radius:6px;padding:20px;width:100%;max-width:760px;max-height:88vh;overflow:auto}
+  .edin h2{margin:0 0 4px;font-size:18px;font-weight:500}
+  .edin h2 b{font-family:var(--han);font-size:30px;font-weight:400;margin-right:8px}
+  .fld{margin-top:14px}
+  .fld label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+  textarea,input[type=text]{width:100%;font:13px/1.6 var(--ui);padding:8px 10px;border:1px solid var(--line2);
+    background:var(--bg);color:var(--ink);border-radius:3px;resize:vertical}
+  textarea{min-height:60px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hint{font-size:12px;color:var(--ink3);margin-top:3px}
+  .bar{display:flex;gap:8px;margin-top:18px}
+  .checks{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;margin-top:14px;font-size:12.5px;color:var(--ink2)}
+  .checks b{color:var(--ink)}
+  .drop{border:2px dashed var(--line2);border-radius:6px;padding:40px;text-align:center;color:var(--ink3)}
+</style>
+
+<header>
+  <h1><b>字</b>内容审核台</h1>
+  <span class="grow"></span>
+  <select id="fLang"><option value="en">English</option><option value="zh">中文</option><option value="ja">日本語</option><option value="es">Español</option></select>
+  <select id="fFlag"><option value="">全部</option><option value="flagged">仅有问题的</option><option value="clean">仅干净的</option></select>
+  <select id="fCh"><option value="">所有章节</option></select>
+  <button id="dl" class="p">导出 content.json</button>
+</header>
+
+<main>
+  <div id="load" class="drop">
+    <p style="margin:0 0 14px">把 <code>content.json</code> 拖到这里就能用</p>
+    <input type="file" id="pick" accept=".json" style="display:none">
+    <button class="p" onclick="document.getElementById('pick').click()">或者选择文件…</button>
+    <p style="margin:14px 0 0;font-size:12px">用本地服务器打开本页会自动加载：<code>python3 -m http.server 8899</code></p>
+  </div>
+  <div id="app" style="display:none">
+    <div class="stats" id="stats"></div>
+    <table><thead><tr>
+      <th data-k="chapter">章</th><th data-k="word">词</th><th>部件</th>
+      <th data-k="difficulty">难度</th><th data-k="layout">排布</th><th data-k="type">造字法</th>
+      <th data-k="clue">谜面</th><th data-k="score">问题</th>
+    </tr></thead><tbody id="rows"></tbody></table>
+  </div>
+</main>
+
+<div class="ed" id="ed"><div class="edin" id="edin"></div></div>
+
+<script>
+var DOC=null, LANG='en', SORT='chapter', DIR=1;
+var ANCHORS=['English','Latin','Greek','Japanese','Nepali','Spanish','英语','英文','日语','日文','拉丁','希腊','西班牙'];
+var TRIVIA=['鑫','淼','犇','人名','personal names'];
+
+function q(id){return document.getElementById(id);}
+
+function audit(p){
+  var f=[];
+  if(!p.lore) f.push({k:'no-lore',t:'没有字源',gap:1});
+  else{
+    var en=p.lore.en||'';
+    if(en.length<70) f.push({k:'lore-short',t:'字源太短'});
+    if(!ANCHORS.some(function(a){return en.indexOf(a)>-1;})) f.push({k:'no-anchor',t:'没锚定英语'});
+    if(TRIVIA.some(function(a){return en.indexOf(a)>-1;})) f.push({k:'trivia',t:'疑似别的字的冷知识'});
+    ['en','zh','ja','es'].forEach(function(l){ if(!p.lore[l]) f.push({k:'lore-'+l,t:'缺 '+l+' 字源'}); });
+  }
+  ['en','zh','ja','es'].forEach(function(l){ if(!p.body||!p.body[l]) f.push({k:'body-'+l,t:'缺 '+l+' 释义'}); });
+  if(p.body&&p.body.en&&p.body.en.length<25) f.push({k:'body-short',t:'释义太短'});
+  if(p.tier==='char'&&!p.type) f.push({k:'no-type',t:'没标造字法'});
+  if(p.tier==='word'&&p.difficulty===1&&p.chapter>=3) f.push({k:'diff-soft',t:'后期章节还是简单题'});
+  if(!p.clue||!p.clue.en) f.push({k:'no-clue',t:'缺英文谜面',hard:1});
+  return f;
+}
+
+function stats(){
+  var P=DOC.puzzles, all=P.map(audit);
+  var hard=all.filter(function(f){return f.some(function(x){return x.hard;});}).length;
+  var gap=all.filter(function(f){return f.some(function(x){return x.gap;});}).length;
+  var other=all.filter(function(f){return f.some(function(x){return !x.gap&&!x.hard;});}).length;
+  var lore=P.filter(function(p){return p.lore;}).length;
+  var byD=[1,2,3].map(function(d){return P.filter(function(p){return p.difficulty===d;}).length;});
+  var byT=['char','word'].map(function(k){return P.filter(function(p){return p.tier===k;}).length;});
+  q('stats').innerHTML=[
+    ['题目总数',P.length,0],['已写字源',lore+' / '+P.length,0],
+    ['待补字源',gap,gap>0],['文案待改',other,other>0],['数据损坏',hard,hard>0],
+    ['难度分布',byD.join(' / '),0],['猜字 / 猜词',byT.join(' / '),0]
+  ].map(function(s){return '<div class="stat'+(s[2]?' warn':'')+'"><div class="n">'+s[1]+'</div><div class="l">'+s[0]+'</div></div>';}).join('');
+}
+
+function render(){
+  stats();
+  var ff=q('fFlag').value, fc=q('fCh').value;
+  var list=DOC.puzzles.map(function(p,i){return {p:p,i:i,f:audit(p)};});
+  if(ff==='flagged') list=list.filter(function(r){return r.f.length;});
+  if(ff==='clean') list=list.filter(function(r){return !r.f.length;});
+  if(fc!=='') list=list.filter(function(r){return String(r.p.chapter)===fc;});
+  list.sort(function(a,b){
+    var x=SORT==='score'?a.f.length:a.p[SORT], y=SORT==='score'?b.f.length:b.p[SORT];
+    if(SORT==='clue'){x=a.p.clue.en;y=b.p.clue.en;}
+    return (x>y?1:x<y?-1:0)*DIR;
+  });
+  q('rows').innerHTML=list.map(function(r){
+    var p=r.p;
+    return '<tr class="row" data-i="'+r.i+'">'
+      +'<td>'+(p.chapter+1)+'</td>'
+      +'<td><span class="w">'+p.word+'</span><div class="hint">'+p.pinyin+'</div></td>'
+      +'<td class="pt">'+p.parts.join(' ＋ ')+'</td>'
+      +'<td><span class="pill d'+p.difficulty+'">'+['','简单','中等','高级'][p.difficulty]+'</span></td>'
+      +'<td><span class="pill">'+({lr:'左右',tb:'上下',en:'包围'}[p.layout]||p.layout)+'</span></td>'
+      +'<td><span class="pill">'+({hui:'会意',xing:'形声',ci:'词'}[p.type]||'—')+'</span></td>'
+      +'<td class="clue">'+(p.clue[LANG]||p.clue.en)+'</td>'
+      +'<td>'+(r.f.length?r.f.map(function(x){return '<span class="flag'+(x.hard?'':(x.gap?' gp':' mi'))+'">'+x.t+'</span>';}).join(''):'<span class="ok">✓</span>')+'</td>'
+    +'</tr>';
+  }).join('');
+  [].forEach.call(document.querySelectorAll('tr.row'),function(tr){
+    tr.onclick=function(){edit(+tr.dataset.i);};
+  });
+}
+
+function edit(i){
+  var p=DOC.puzzles[i], f=audit(p);
+  function ta(id,val,lab){return '<div class="fld"><label>'+lab+'</label><textarea id="'+id+'">'+(val||'').replace(/</g,'&lt;')+'</textarea></div>';}
+  q('edin').innerHTML='<h2><b>'+p.word+'</b>'+p.pinyin+' · '+p.clue.en+'</h2>'
+    +'<div class="hint">'+p.parts.join(' ＋ ')+' · 第 '+(p.chapter+1)+' 章 · '
+      +['','简单','中等','高级'][p.difficulty]+' · '+({lr:'左右',tb:'上下',en:'包围'}[p.layout]||p.layout)+'</div>'
+    +(f.length?'<div class="checks"><b>自动检查：</b>'+f.map(function(x){return x.t;}).join('、')+'</div>':'<div class="checks"><b class="ok">✓ 没有检出问题</b></div>')
+    +'<div class="row2">'
+      +'<div class="fld"><label>难度</label><select id="e_d"><option value="1">1 简单</option><option value="2">2 中等</option><option value="3">3 高级</option></select></div>'
+      +'<div class="fld"><label>排布</label><select id="e_l"><option value="lr">左右</option><option value="tb">上下</option><option value="en">包围</option></select></div>'
+    +'</div>'
+    +'<div class="fld"><label>谜面 EN</label><input type="text" id="e_qen" value="'+(p.clue.en||'').replace(/"/g,'&quot;')+'"></div>'
+    +['en','zh','ja','es'].map(function(l){return ta('e_b_'+l,p.body?p.body[l]:'','释义 · '+l.toUpperCase());}).join('')
+    +['en','zh','ja','es'].map(function(l){return ta('e_x_'+l,p.lore?p.lore[l]:'','字源 · '+l.toUpperCase());}).join('')
+    +'<div class="bar"><button class="p" id="e_save">保存</button><button id="e_close">取消</button></div>';
+  q('e_d').value=p.difficulty; q('e_l').value=p.layout;
+  q('ed').classList.add('on');
+  q('e_close').onclick=function(){q('ed').classList.remove('on');};
+  q('e_save').onclick=function(){
+    p.difficulty=+q('e_d').value; p.layout=q('e_l').value; p.clue.en=q('e_qen').value;
+    p.body=p.body||{}; ['en','zh','ja','es'].forEach(function(l){p.body[l]=q('e_b_'+l).value;});
+    var any=['en','zh','ja','es'].some(function(l){return q('e_x_'+l).value.trim();});
+    if(any){p.lore=p.lore||{}; ['en','zh','ja','es'].forEach(function(l){p.lore[l]=q('e_x_'+l).value;});}
+    else p.lore=null;
+    q('ed').classList.remove('on'); render();
+  };
+}
+
+function boot(d){
+  DOC=d; q('load').style.display='none'; q('app').style.display='block';
+  q('fCh').innerHTML='<option value="">所有章节</option>'+DOC.chapters.map(function(c,i){
+    return '<option value="'+i+'">第 '+(i+1)+' 章 · '+c.t.zh+' · '+(c.k==='char'?'造字':'造词')+'</option>';}).join('');
+  render();
+}
+
+q('fLang').onchange=function(){LANG=this.value;render();};
+q('fFlag').onchange=render; q('fCh').onchange=render;
+[].forEach.call(document.querySelectorAll('th[data-k]'),function(th){
+  th.onclick=function(){var k=th.dataset.k; DIR=(SORT===k)?-DIR:1; SORT=k; render();};
+});
+q('dl').onclick=function(){
+  var b=new Blob([JSON.stringify(DOC,null,2)+'\n'],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='content.json'; a.click();
+};
+q('pick').onchange=function(){var f=this.files[0];if(!f)return;
+  var r=new FileReader(); r.onload=function(){boot(JSON.parse(r.result));}; r.readAsText(f);};
+document.ondragover=function(e){e.preventDefault();};
+document.ondrop=function(e){e.preventDefault();var f=e.dataTransfer.files[0];if(!f)return;
+  var r=new FileReader(); r.onload=function(){boot(JSON.parse(r.result));}; r.readAsText(f);};
+fetch('../content.json').then(function(r){return r.json();}).then(boot).catch(function(){});
+</script>

@@ -1,0 +1,97 @@
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <filter id="inkbleed"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" result="w"/>
+  <feDisplacementMap in="SourceGraphic" in2="w" scale="14"/></filter>
+  <filter id="chop" x="-8%" y="-8%" width="116%" height="116%">
+    <feTurbulence type="fractalNoise" baseFrequency=".18 .24" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter>
+</svg>
+<div id="fx" aria-hidden="true">
+  <div class="scene"></div>
+  <video class="bgv" autoplay muted loop playsinline preload="auto" src="bg-mist.mp4"></video>
+  <div class="bloom"></div>
+  <div class="ghost">墨</div>
+  <div class="embers" id="embers"></div>
+  <div class="vig"></div>
+  <div class="grain"></div>
+  <div class="corner c-tl"><svg viewBox="0 0 54 54"><path d="M2 30 V2 h28"/><path d="M8 30 V8 h22"/><path d="M8 14 h8 v8"/></svg></div>
+  <div class="corner c-tr"><svg viewBox="0 0 54 54"><path d="M2 30 V2 h28"/><path d="M8 30 V8 h22"/><path d="M8 14 h8 v8"/></svg></div>
+  <div class="corner c-br"><svg viewBox="0 0 54 54"><path d="M2 30 V2 h28"/><path d="M8 30 V8 h22"/><path d="M8 14 h8 v8"/></svg></div>
+  <div class="corner c-bl"><svg viewBox="0 0 54 54"><path d="M2 30 V2 h28"/><path d="M8 30 V8 h22"/><path d="M8 14 h8 v8"/></svg></div>
+</div>
+<div class="app">
+  <header class="bar">
+    <div class="logo"><b class="sealogo">墨</b><span class="wm"><b>INK</b><i>hanzi puzzles</i></span></div>
+    <div class="modes" id="modes" role="tablist" style="display:none">
+      <button id="m-char" role="tab" aria-selected="true"></button>
+      <button id="m-word" role="tab" aria-selected="false"></button>
+    </div>
+    <div class="hr">
+      <button class="help" id="snd" aria-label="Sound">♪</button>
+      <button class="help" id="help" aria-label="How to play" style="display:none">?</button>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="zh">简体中文</option>
+        <option value="ja">日本語</option><option value="es">Español</option>
+      </select>
+    </div>
+  </header>
+
+  <main>
+    <div id="intro">
+      <div class="in-mark"><span class="in-seal">墨</span><span class="in-en">Ink · hanzi, piece by piece</span></div>
+      <div class="in-demo" aria-hidden="true">
+        <span class="d-tile d-a">日</span><span class="d-plus">＋</span><span class="d-tile d-b">月</span>
+        <span class="d-res">明</span>
+      </div>
+      <div class="in-demo-cap" id="i-demo-cap"></div>
+      <div class="hero"><h1 id="i-h"></h1><p id="i-p"></p></div>
+      <div class="in-go" style="text-align:center;margin-bottom:var(--s3)"><button class="btn" id="i-btn"></button></div>
+      <div class="in-lang" id="in-lang">
+        <button data-l="en">English</button><button data-l="zh">中文</button>
+        <button data-l="ja">日本語</button><button data-l="es">Español</button>
+      </div>
+    </div>
+
+    <div id="game" style="display:none">
+      <div id="center">
+        <div id="donebox"></div>
+        <div class="lvl">
+          <span class="g"><span id="lv"></span><span class="track"><i id="bar"></i></span></span>
+          <div class="strip" id="strip"></div>
+          <span class="n"><b id="cnt">0</b> / <span id="tot">7</span></span>
+        </div>
+        <div id="puzzle">
+          <div class="quiz"><div class="k" id="l-build"></div><div class="v" id="target"></div><div class="sub" id="sub"></div></div>
+          <div class="coach" id="coach" style="display:none"></div>
+          <div class="rows" id="rows"></div>
+          <div class="shape" id="shape"></div>
+          <div class="board" id="board">
+            <div class="ringbg" aria-hidden="true"><svg viewBox="0 0 400 400" fill="none">
+              <circle class="rk1" cx="200" cy="200" r="196" stroke-width="1"/>
+              <circle class="rk2" cx="200" cy="200" r="172" stroke-width="1" stroke-dasharray="2 9"/>
+              <circle class="rk3" cx="200" cy="200" r="148" stroke-width="14" stroke-dasharray="1 22"/>
+              <g class="rk4" stroke-width="2"><path d="M200 10 v14"/><path d="M200 376 v14"/><path d="M10 200 h14"/><path d="M376 200 h14"/></g>
+            </svg></div>
+            <button class="cell" id="s0" aria-label="first block"></button>
+            <span class="op">＋</span>
+            <button class="cell" id="s1" aria-label="second block"></button>
+          </div>
+          <button class="btn go" id="check"></button>
+          <div class="tray" id="tray"></div>
+          <div class="cap"><span></span><button id="hintb" style="display:none"></button></div>
+        </div>
+        <div id="reveal" style="display:none"></div>
+      </div>
+      <div class="rail-r">
+        <div id="rail-strip"></div>
+        <div class="cap"><span id="l-coll"></span></div>
+        <div class="coll" id="coll"></div>
+      </div>
+    </div>
+  </main>
+  <p class="foot" id="foot"></p>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sheet" id="sheet" style="display:none"><div class="sheetin">
+  <h3 id="sh-h"></h3><div id="sh-b"></div>
+  <button class="btn" id="sh-x"></button>
+</div></div>
