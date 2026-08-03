@@ -60,7 +60,7 @@
           <span class="n"><b id="cnt">0</b> / <span id="tot">7</span></span>
         </div>
         <div id="puzzle">
-          <div class="quiz"><div class="k" id="l-build"></div><div class="v" id="target"></div><div class="sub" id="sub"></div></div>
+          <div class="quiz"><div class="k" id="l-build"></div><div class="v" id="target"></div><div class="qpy" id="qpy"></div><div class="sub" id="sub"></div></div>
           <div class="coach" id="coach" style="display:none"></div>
           <div class="rows" id="rows"></div>
           <div class="shape" id="shape"></div>
@@ -71,9 +71,13 @@
               <circle class="rk3" cx="200" cy="200" r="148" stroke-width="14" stroke-dasharray="1 22"/>
               <g class="rk4" stroke-width="2"><path d="M200 10 v14"/><path d="M200 376 v14"/><path d="M10 200 h14"/><path d="M376 200 h14"/></g>
             </svg></div>
-            <button class="cell" id="s0" aria-label="first block"></button>
-            <span class="op">＋</span>
-            <button class="cell" id="s1" aria-label="second block"></button>
+            <div class="slotgrp">
+              <button class="cell" id="s0" aria-label="first block"></button>
+              <span class="op">＋</span>
+              <button class="cell" id="s1" aria-label="second block"></button>
+            </div>
+            <span class="op">＝</span>
+            <div class="cell prev" id="prev" aria-hidden="true"></div>
           </div>
           <button class="btn go" id="check"></button>
           <div class="tray" id="tray"></div>

@@ -245,7 +245,22 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
 
   /* ── 拼字台 ── */
   .board{display:flex;align-items:center;justify-content:center;gap:var(--s2);margin-bottom:var(--s3);position:relative}
-  .board.tb{flex-direction:column}
+  .slotgrp{display:flex;align-items:center;gap:var(--s2)}
+  .board.tb .slotgrp{flex-direction:column}
+  .cell.prev{cursor:default;border-style:solid;border-color:rgba(212,169,92,.4);background:rgba(212,169,92,.05)}
+  .pvq{font-family:var(--f-han);font-size:30px;color:var(--ink-3);opacity:.5}
+  .pv{display:flex;width:100%;height:100%;align-items:center;justify-content:center;
+    font-family:var(--f-han);color:var(--goldHi);overflow:hidden}
+  .pv i,.pv em{font-style:normal;display:block;line-height:1}
+  .pv-lr{flex-direction:row}
+  .pv-lr i{font-size:38px;transform:scaleX(.55);margin:0 -7px}
+  .pv-tb{flex-direction:column}
+  .pv-tb i{font-size:38px;transform:scaleY(.55);margin:-7px 0}
+  .pv-en{position:relative}
+  .pv-en i{font-size:46px}
+  .pv-en em{position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);font-size:15px}
+  .pv-w{font-family:var(--f-han);font-size:22px;color:var(--goldHi)}
+  .qpy{font-family:var(--f-clue);font-style:italic;font-size:16px;color:var(--gold);margin-top:3px}
   .ringbg{position:absolute;left:50%;top:50%;width:340px;height:340px;transform:translate(-50%,-50%);pointer-events:none;opacity:.8}
   .ringbg svg{width:100%;height:100%;transform-origin:center}
   .rk1{stroke:var(--jade);opacity:.14}.rk2{stroke:var(--jade);opacity:.2}
@@ -562,7 +577,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
           <span class="n"><b id="cnt">0</b> / <span id="tot">7</span></span>
         </div>
         <div id="puzzle">
-          <div class="quiz"><div class="k" id="l-build"></div><div class="v" id="target"></div><div class="sub" id="sub"></div></div>
+          <div class="quiz"><div class="k" id="l-build"></div><div class="v" id="target"></div><div class="qpy" id="qpy"></div><div class="sub" id="sub"></div></div>
           <div class="coach" id="coach" style="display:none"></div>
           <div class="rows" id="rows"></div>
           <div class="shape" id="shape"></div>
@@ -573,9 +588,13 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
               <circle class="rk3" cx="200" cy="200" r="148" stroke-width="14" stroke-dasharray="1 22"/>
               <g class="rk4" stroke-width="2"><path d="M200 10 v14"/><path d="M200 376 v14"/><path d="M10 200 h14"/><path d="M376 200 h14"/></g>
             </svg></div>
-            <button class="cell" id="s0" aria-label="first block"></button>
-            <span class="op">＋</span>
-            <button class="cell" id="s1" aria-label="second block"></button>
+            <div class="slotgrp">
+              <button class="cell" id="s0" aria-label="first block"></button>
+              <span class="op">＋</span>
+              <button class="cell" id="s1" aria-label="second block"></button>
+            </div>
+            <span class="op">＝</span>
+            <div class="cell prev" id="prev" aria-hidden="true"></div>
           </div>
           <button class="btn go" id="check"></button>
           <div class="tray" id="tray"></div>
@@ -601,7 +620,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
 <script>
 (function(){
 var L={
-en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find the two parts that make it. Two games: build a character, or build a word.',ibtn:'Start',demo:'In Chinese, characters combine.',
+en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find the two parts that make it. Two games: build a character, or build a word.',ibtn:'Start',demo:'In Chinese, characters combine.',soundRule:'New rule: in this character one part carries only the <b>sound</b>. Match the pinyin on the tiles to the target sound above.',
  build:'Build this',check:'Check',next:'Next',share:'Share',copied:'Copied',hintb:'Hint',hint:'Hint',
  kg:'both right',kh:'one right',kn:'neither',nu:'new',coll:'Found',chap:'Chapter',lore:'Where it comes from',oracle:'oracle-bone forms, ~1200 BC',
  kchar:'Characters',kword:'Words',diff:['easy','medium','hard'],mchar:'Characters',mword:'Words',tchar2:'parts → character',tword2:'characters → word',mDone:'{m} — all done.',tryOther:'Try the other one',aChar:'character',aWord:'word',stampNew:'新',stampOk:'对',stampNo:'惜',cheerNew:'You unlocked a new {k}',cheerAgain:'Right again',cheerFail:'Out of tries',cheerFailSub:'Here it is anyway.',coach1:'Tap <b>two blocks</b> below, then press <b>Check</b>. You do not need to know any Chinese — guess.',coach2:'That is the feedback you get. Six tries per puzzle.',rulesH:'How to play',r1:'You get a <b>meaning</b>. Find the <b>two parts</b> that build it.',r2:'Tap two blocks, then <b>Check</b>. <b>Six tries</b>.',r3:'Every answer opens with where the character came from.',close:'Got it',lay:{lr:'side by side',tb:'one on top of the other',en:'one wraps the other'},coach3:'The slots above show you which shape this one is. That is a real rule — every character fits in one square.',r4:'The two parts share <b>one square</b>. The slots show you how they sit.',hintOb:'One of the two parts looked like this three thousand years ago.',hintName:'It is',hintb2:'Still stuck',tchar:'two parts → one character',tword:'two characters → one word',
@@ -609,7 +628,7 @@ en:{ih:'Chinese words are built from parts.',ip:'We give you a meaning. You find
  dtitle:'You solved all 41.',dbody:'That is the whole prototype. The real thing keeps going — the same few dozen parts build thousands of actual Chinese words.',
  solvedIt:'Solved in {n}',failedIt:'Out of tries',
  foot:'Prototype · 6 chapters · 48 puzzles'},
-zh:{ih:'中文的词，是拼出来的。',ip:'每道题给你一个含义，你从牌里挑出两块，拼成对应的字或词。不认识汉字也能玩——凭直觉猜。',ibtn:'开始',demo:'汉字，能拼出新的汉字。',
+zh:{ih:'中文的词，是拼出来的。',ip:'每道题给你一个含义，你从牌里挑出两块，拼成对应的字或词。不认识汉字也能玩——凭直觉猜。',ibtn:'开始',demo:'汉字，能拼出新的汉字。',soundRule:'新规则：这个字里有一块只管<b>读音</b>——对着牌上的拼音，找和目标读音相近的那块。',
  build:'拼出这个',check:'检查',next:'下一题',share:'分享',copied:'已复制',hintb:'提示',hint:'提示',
  kg:'两块都对',kh:'对了一块',kn:'都不对',nu:'新',coll:'已解开',chap:'第',lore:'字源',oracle:'甲骨文字形 · 约公元前 1200 年',
  kchar:'造字',kword:'造词',diff:['简单','中等','高级'],mchar:'猜字',mword:'猜词',tchar2:'部件 → 字',tword2:'字 → 词',mDone:'{m} 全部完成。',tryOther:'去玩另一种',aChar:'汉字',aWord:'词',stampNew:'新',stampOk:'对',stampNo:'惜',cheerNew:'你解开了一个新{k}',cheerAgain:'又对了一次',cheerFail:'六次用完了',cheerFailSub:'答案还是给你。',coach1:'从下面挑<b>两块牌</b>，按<b>检查</b>。不认识汉字没关系——凭感觉猜。',coach2:'这些颜色就是每次猜完的反馈。每题六次机会。',rulesH:'怎么玩',r1:'每道题给出一个<b>含义</b>，从牌里挑出拼成它的<b>两块</b>。',r2:'选两块，按<b>检查</b>。每题<b>六次</b>机会。',r3:'每答对一题，解锁这个字的来历。',close:'知道了',lay:{lr:'左右并排',tb:'上下叠放',en:'一个包住另一个'},coach3:'上方的小图标提示这一题的结构。这是汉字的真实规则——两个部件要装进同一个方格。',r4:'两块要放进<b>同一个方格</b>——左右、上下，或一个包住另一个。',hintOb:'其中一块，三千年前长这样。',hintName:'它是',hintb2:'还是想不出',tchar:'两个部件 → 一个字',tword:'两个字 → 一个词',
@@ -617,7 +636,7 @@ zh:{ih:'中文的词，是拼出来的。',ip:'每道题给你一个含义，你
  dtitle:'41 题全解开了。',dbody:'这个原型里就这些。真正的版本会一直下去 —— 同样这几十块，能拼出几千个真实存在的中文词。',
  solvedIt:'{n} 次猜中',failedIt:'次数用完了',
  foot:'原型 · 6 章 · 48 题'},
-ja:{ih:'中国語の単語は、部品でできている。',ip:'意味を出します。それを作る2つを当ててください。漢字を作る／単語を作るの2種類。',ibtn:'開始',demo:'漢字は、組み合わさって新しい字になる。',
+ja:{ih:'中国語の単語は、部品でできている。',ip:'意味を出します。それを作る2つを当ててください。漢字を作る／単語を作るの2種類。',ibtn:'開始',demo:'漢字は、組み合わさって新しい字になる。',soundRule:'新ルール：この字では片方の部品が<b>音</b>だけを担当します。牌のピンインを目標の読みと見比べて。',
  build:'これを作る',check:'判定',next:'次へ',share:'シェア',copied:'コピーしました',hintb:'ヒント',hint:'ヒント',
  kg:'両方正解',kh:'1つ正解',kn:'不正解',nu:'新',coll:'解けた',chap:'第',lore:'字源',oracle:'甲骨文の字形・紀元前1200年頃',
  kchar:'漢字づくり',kword:'単語づくり',diff:['やさしい','ふつう','難しい'],mchar:'漢字',mword:'単語',tchar2:'部品 → 漢字',tword2:'漢字 → 単語',mDone:'{m} 全クリア。',tryOther:'もう一方へ',aChar:'漢字',aWord:'単語',stampNew:'新',stampOk:'正',stampNo:'惜',cheerNew:'新しい{k}を解きました',cheerAgain:'また正解',cheerFail:'回数切れ',cheerFailSub:'答えはこちら。',coach1:'下の<b>2つ</b>をタップして<b>判定</b>を押します。中国語を知らなくても大丈夫、当てずっぽうでどうぞ。',coach2:'これが返ってくる判定です。1問6回まで。',rulesH:'遊び方',r1:'<b>意味</b>が出ます。それを作る<b>2つ</b>を見つけてください。',r2:'2つ選んで<b>判定</b>。<b>6回</b>まで。',r3:'正解すると、その字の由来が読めます。',close:'わかった',lay:{lr:'左右にならぶ',tb:'上下にかさなる',en:'片方が囲む'},coach3:'上の枠がどの形かを教えてくれます。漢字は必ず一つの正方形に収まります。',r4:'2つは<b>同じ正方形</b>を分け合います。枠が配置を示します。',hintOb:'2つのうち一方は、三千年前こんな形でした。',hintName:'これは',hintb2:'まだ分からない',tchar:'部品2つ → 漢字1つ',tword:'漢字2つ → 単語1つ',
@@ -625,7 +644,7 @@ ja:{ih:'中国語の単語は、部品でできている。',ip:'意味を出し
  dtitle:'41問すべて解きました。',dbody:'プロトタイプはここまで。本番版はさらに続きます。',
  solvedIt:'{n}回で正解',failedIt:'回数切れ',
  foot:'プロトタイプ · 6章 · 48問'},
-es:{ih:'Las palabras chinas se construyen con piezas.',ip:'Te damos un significado. Encuentra las dos piezas. Dos juegos: construir un carácter o una palabra.',ibtn:'Empezar',demo:'Los caracteres chinos se combinan.',
+es:{ih:'Las palabras chinas se construyen con piezas.',ip:'Te damos un significado. Encuentra las dos piezas. Dos juegos: construir un carácter o una palabra.',ibtn:'Empezar',demo:'Los caracteres chinos se combinan.',soundRule:'Nueva regla: aquí una pieza solo aporta el <b>sonido</b>. Compara el pinyin de las fichas con el sonido objetivo.',
  build:'Construye esto',check:'Comprobar',next:'Siguiente',share:'Compartir',copied:'Copiado',hintb:'Pista',hint:'Pista',
  kg:'ambas bien',kh:'una bien',kn:'ninguna',nu:'nuevo',coll:'Resueltos',chap:'Capítulo',lore:'De dónde viene',oracle:'formas oraculares, ~1200 a.C.',
  kchar:'Caracteres',kword:'Palabras',diff:['fácil','medio','difícil'],mchar:'Caracteres',mword:'Palabras',tchar2:'piezas → carácter',tword2:'caracteres → palabra',mDone:'{m}: completado.',tryOther:'Prueba el otro',aChar:'carácter',aWord:'palabra',stampNew:'新',stampOk:'对',stampNo:'惜',cheerNew:'Has desbloqueado un {k} nuevo',cheerAgain:'Otra vez bien',cheerFail:'Sin intentos',cheerFailSub:'Aquí está de todos modos.',coach1:'Toca <b>dos piezas</b> abajo y pulsa <b>Comprobar</b>. No hace falta saber chino: adivina.',coach2:'Esa es la respuesta que recibes. Seis intentos por puzle.',rulesH:'Cómo jugar',r1:'Recibes un <b>significado</b>. Encuentra las <b>dos piezas</b> que lo forman.',r2:'Toca dos piezas y pulsa <b>Comprobar</b>. <b>Seis intentos</b>.',r3:'Cada acierto te cuenta de dónde viene el carácter.',close:'Entendido',lay:{lr:'lado a lado',tb:'uno encima del otro',en:'uno envuelve al otro'},coach3:'Las casillas de arriba te dicen la forma. Es una regla real: cada carácter cabe en un cuadrado.',r4:'Las dos piezas comparten <b>un cuadrado</b>. Las casillas muestran cómo se colocan.',hintOb:'Una de las dos piezas se veía así hace tres mil años.',hintName:'Es',hintb2:'Sigo atascado',tchar:'dos piezas → un carácter',tword:'dos caracteres → una palabra',
@@ -870,6 +889,7 @@ function load(){
   q('sub').textContent=CH[ci].k==='char'?t.tchar:t.tword;
   q('target').textContent=lang==='es'?p.q.es:p.q.en;
   motionClue(q('target'));
+  if(q('qpy'))q('qpy').textContent=CH[ci].k==='char'?p.py:'';
   var pz=q('puzzle');pz.classList.remove('enter');void pz.offsetWidth;pz.classList.add('enter');
   var lk=layOf(p);
   q('board').className='board'+(lk==='tb'?' tb':'');
@@ -877,6 +897,11 @@ function load(){
   drawTrace();q('reveal').innerHTML='';q('check').disabled=false;
   q('reveal').style.display='none';q('puzzle').style.display='block';
   coach(taught<1?0:3);
+  (function(){var ex0=EX[p.w];
+    if(CH[ci].k!=='char'||!ex0||ex0.k!=='xing')return;
+    var seen=false;try{seen=!!localStorage.getItem('hz-xing');}catch(e){}
+    if(seen)return;try{localStorage.setItem('hz-xing','1');}catch(e){}
+    var c=q('coach');c.style.display='block';c.innerHTML=t.soundRule;})();
   q('check').textContent=t.check;q('hintb').textContent=t.hintb;q('hintb').style.display='none';shown=0;
   var tray=q('tray');tray.innerHTML='';
   tilesFor(p,ci*100+qi).forEach(function(ch){
@@ -894,7 +919,15 @@ function load(){
 function slots(){[0,1].forEach(function(i){var e=q('s'+i);
   e.innerHTML=sel[i]?face(sel[i])
     :((taught<1&&!guesses.length&&!over)?'<span class="ghp">'+(i?cur().b:cur().a)+'</span>':'');
-  e.onclick=function(){if(over||!sel[i])return;sel.splice(i,1);slots();};});}
+  e.onclick=function(){if(over||!sel[i])return;sel.splice(i,1);slots();};});
+  drawPrev();}
+function drawPrev(){var e=q('prev');if(!e)return;var p=cur();
+  if(sel.length<2){e.innerHTML='<span class="pvq">?</span>';return;}
+  if(CH[ci].k==='word'){e.innerHTML='<span class="pv-w">'+sel[0]+sel[1]+'</span>';return;}
+  var lk=layOf(p);
+  if(lk==='lr')e.innerHTML='<span class="pv pv-lr"><i>'+sel[0]+'</i><i>'+sel[1]+'</i></span>';
+  else if(lk==='tb')e.innerHTML='<span class="pv pv-tb"><i>'+sel[0]+'</i><i>'+sel[1]+'</i></span>';
+  else e.innerHTML='<span class="pv pv-en"><i>'+sel[0]+'</i><em>'+sel[1]+'</em></span>';}
 function progress(){
   var list=chQ(ci),n=list.filter(function(x){return solved[x.w];}).length;
   q('cnt').textContent=n;q('tot').textContent=list.length;
