@@ -33,6 +33,15 @@ swap('DIFF', 'var DIFF=' + j(DIFF) + ';');
 const LAY = {}; d.puzzles.filter((p) => p.tier === 'char').forEach((p) => { LAY[p.word] = p.layout; });
 swap('LAY', 'var LAY=' + j(LAY) + ';');
 
+// 语法自检：整段游戏脚本 parse 一遍，拦住"一个撇号白屏整站"级的低级错误
+const sm = html.match(/<script>\n([\s\S]*?)<\/script>/);
+if (!sm) throw new Error('script block missing');
+try {
+  new Function(sm[1]);
+} catch (e) {
+  throw new Error('SYNTAX CHECK FAILED — build aborted: ' + e.message);
+}
+
 fs.writeFileSync(path.join(root, 'hanzi.html'), html, 'utf8');
 fs.mkdirSync(path.join(root, 'hanzi-site'), { recursive: true });
 fs.writeFileSync(path.join(root, 'hanzi-site', 'index.html'), html, 'utf8');
