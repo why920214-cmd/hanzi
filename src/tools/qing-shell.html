@@ -1,3 +1,4 @@
+<link rel="prefetch" href="three.module.js">
 <svg style="position:absolute;width:0;height:0" aria-hidden="true">
   <filter id="inkbleed"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" result="w"/>
   <feDisplacementMap in="SourceGraphic" in2="w" scale="14"/></filter>
@@ -26,6 +27,7 @@
       <button id="m-word" role="tab" aria-selected="false"></button>
     </div>
     <div class="hr">
+      <button class="help" id="relicbtn" aria-label="Relics" style="display:none">🏺</button>
       <button class="help" id="snd" aria-label="Sound">♪</button>
       <button class="help" id="help" aria-label="How to play" style="display:none">?</button>
       <select id="lang" aria-label="Language">
@@ -95,6 +97,17 @@
   <p class="foot" id="foot"></p>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="chmodal" id="chmodal" style="display:none">
+  <div class="chm-in">
+    <button class="chm-x" id="chm-x" aria-label="Close">✕</button>
+    <h3 id="chm-h"></h3><p id="chm-p"></p>
+    <div id="relic"></div>
+    <div class="reliccap" id="chm-cap"></div>
+    <div class="relicwhy" id="chm-why"></div>
+    <div class="relicshelf" id="chm-shelf"></div>
+    <div class="chm-acts" id="chm-acts"></div>
+  </div>
+</div>
 <div class="sheet" id="sheet" style="display:none"><div class="sheetin">
   <h3 id="sh-h"></h3><div id="sh-b"></div>
   <button class="btn" id="sh-x"></button>

@@ -404,7 +404,28 @@
   .done .btn.ghost{color:var(--paperInk);border-color:var(--paperInk2)}
   .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
     background:var(--jadeHi);color:#06231b;font-size:var(--t-sm);padding:8px 16px;border-radius:20px;
-    opacity:0;pointer-events:none;z-index:20;transition:opacity .2s,transform .2s var(--ease)}
+    opacity:0;pointer-events:none;z-index:60;transition:opacity .2s,transform .2s var(--ease)}
+  /* 章完成 / 供奉架 满屏弹窗 */
+  .chmodal{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;
+    background:rgba(3,10,8,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:18px}
+  .chm-in{position:relative;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;
+    background:linear-gradient(180deg,#0f231d,#0a1a15);border:1px solid var(--line-2);border-radius:18px;
+    padding:26px 26px 22px;text-align:center;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+  .chm-x{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;
+    border:1px solid var(--line-2);background:transparent;color:var(--ink-2);cursor:pointer;font-size:13px}
+  .chm-in h3{margin:2px 0 4px;font-size:22px;font-weight:600;color:var(--jadeHi);letter-spacing:.02em}
+  .chm-in p{margin:0 0 6px;font-size:var(--t-sm);color:var(--ink-2)}
+  .chm-in #relic{height:210px}
+  .chm-acts{display:flex;gap:10px;justify-content:center;margin-top:var(--s3)}
+  .chm-acts .btn{min-width:150px}
+  .relic-lock{font-size:44px;line-height:200px;opacity:.4;filter:grayscale(1)}
+  #relic:empty::before{content:"";display:block;width:40px;height:40px;margin:80px auto 0;
+    border:2px solid var(--line-2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
+  .relicshelf span.cur{outline:1px solid var(--gold);outline-offset:2px}
+  .done-min{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    background:var(--pane);border:1px solid var(--line);border-radius:10px;
+    padding:10px 14px;margin-bottom:var(--s3);font-size:var(--t-sm);color:var(--jadeHi)}
+  .btn.sm{padding:8px 14px;font-size:var(--t-sm)}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   .foot{padding:var(--s3) var(--s4) var(--s5);border-top:1px solid var(--line);
     font-size:var(--t-sm);color:var(--ink-3);text-align:center}
