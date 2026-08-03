@@ -217,7 +217,9 @@
   .tg.g{border-color:var(--jade);background:var(--jade-bg);color:var(--jadeHi)}
   .tg.a{border-color:var(--gold);color:var(--goldHi)}
   .tg.n{opacity:.45}
-  .tg.empty{border-style:dashed;opacity:.3;min-width:34px}
+  .tg.empty{border-style:dashed;opacity:.22;min-width:12px;width:12px;height:12px;padding:0;border-radius:50%}
+  .cell.plain::before,.cell.plain::after{display:none}
+  .cell.plain{border-style:solid;border-color:var(--line)}
   #rail-strip .strip{margin:0 0 var(--s3);flex-wrap:wrap}
   .rl.g{color:var(--jade)} .rl.a{color:var(--gold)}
   .hintbox{border:1px dashed var(--goldLo);border-radius:4px;padding:var(--s2) var(--s3);
