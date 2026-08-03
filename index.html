@@ -443,6 +443,11 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
     background:var(--pane);border:1px solid var(--line);border-radius:10px;
     padding:10px 14px;margin-bottom:var(--s3);font-size:var(--t-sm);color:var(--jadeHi)}
   .btn.sm{padding:8px 14px;font-size:var(--t-sm)}
+  .recap{margin-bottom:var(--s3)}
+  .recap .cap{margin:0 0 var(--s2)}
+  .recapg{grid-template-columns:repeat(4,1fr);gap:10px}
+  .recapg div{height:76px;font-size:30px;border-radius:10px}
+  .recapg div.w{font-size:17px}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   .foot{padding:var(--s3) var(--s4) var(--s5);border-top:1px solid var(--line);
     font-size:var(--t-sm);color:var(--ink-3);text-align:center}
@@ -1002,12 +1007,21 @@ function drawStrip(){var st=q('strip');st.innerHTML='';
 var justSolved=null;
 function goCh(c){disposeRelic();ci=c;qi=firstUnsolved(c);q('donebox').innerHTML='';load();
   if(chDone(c)){q('puzzle').style.display='none';
-    var nn=nextCh();
+    var nn=nextCh(),allDone=modeChs().every(chDone);
     q('donebox').innerHTML='<div class="done-min"><span>✓ '+t.chDone+'</span>'
       +'<button class="btn ghost sm" id="dm-r">🏺 '+t.relics[c%t.relics.length]+'</button>'
-      +(nn>-1?'<button class="btn sm" id="dm-n">'+t.chNext+'</button>':'')+'</div>';
+      +(nn>-1?'<button class="btn sm" id="dm-n">'+t.chNext+'</button>':'')
+      +(allDone?'<button class="btn sm" id="dm-s">'+t.tryOther+'</button>':'')+'</div>'
+      +'<div class="recap">'
+      +'<div class="coll recapg">'+chQ(c).map(function(p){
+          return '<div class="got'+(p.w.length>1?' w':'')+(chDone(3)?' rv':'')+'" data-w="'+p.w+'">'+p.w+'</div>';}).join('')
+      +'</div></div>';
     q('dm-r').onclick=function(){fillRelicModal(c,false);};
-    if(nn>-1)q('dm-n').onclick=function(){goCh(nn);};}
+    if(nn>-1)q('dm-n').onclick=function(){goCh(nn);};
+    if(allDone)q('dm-s').onclick=function(){setMode(MODE==='char'?'word':'char');};
+    if(chDone(3))[].forEach.call(q('donebox').querySelectorAll('.recapg div'),function(el){
+      el.onclick=function(){var w=el.getAttribute('data-w'),p=null;
+        Q.forEach(function(x){if(x.w===w)p=x;});if(p)reviewWord(p);};});}
   window.scrollTo(0,0);}
 function setMode(m){
   MODE=m;

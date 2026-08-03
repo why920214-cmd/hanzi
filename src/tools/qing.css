@@ -426,6 +426,11 @@
     background:var(--pane);border:1px solid var(--line);border-radius:10px;
     padding:10px 14px;margin-bottom:var(--s3);font-size:var(--t-sm);color:var(--jadeHi)}
   .btn.sm{padding:8px 14px;font-size:var(--t-sm)}
+  .recap{margin-bottom:var(--s3)}
+  .recap .cap{margin:0 0 var(--s2)}
+  .recapg{grid-template-columns:repeat(4,1fr);gap:10px}
+  .recapg div{height:76px;font-size:30px;border-radius:10px}
+  .recapg div.w{font-size:17px}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   .foot{padding:var(--s3) var(--s4) var(--s5);border-top:1px solid var(--line);
     font-size:var(--t-sm);color:var(--ink-3);text-align:center}
