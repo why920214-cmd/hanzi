@@ -441,6 +441,12 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
   #relic:empty::before{content:"";display:block;width:40px;height:40px;margin:80px auto 0;
     border:2px solid var(--line-2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
   .relicshelf span.cur{outline:1px solid var(--gold);outline-offset:2px}
+  .vidwrap .vid-in{position:relative;max-width:none;background:none;border:0;box-shadow:none;padding:0;overflow:visible}
+  #kepuv{display:block;height:min(86vh,880px);max-width:94vw;border-radius:14px;background:#000;
+    box-shadow:0 30px 90px rgba(0,0,0,.6)}
+  #kepuv::cue{background:rgba(8,21,18,.75);color:#e6ddc9;font-size:16px}
+  .vidwrap .chm-x{top:-38px;right:0}
+  .kepub{width:100%;margin-top:var(--s2)}
   .done-min{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
     background:var(--pane);border:1px solid var(--line);border-radius:10px;
     padding:10px 14px;margin-bottom:var(--s3);font-size:var(--t-sm);color:var(--jadeHi)}
@@ -642,6 +648,12 @@ src:url(data:font/woff2;base64,d09GMgABAAAAAJh8AA4AAAAA+DQAAJgkAAEAAAAAAAAAAAAAA
   <p class="foot" id="foot"></p>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="chmodal vidwrap" id="vidmodal" style="display:none">
+  <div class="vid-in">
+    <button class="chm-x" id="vid-x" aria-label="Close">✕</button>
+    <video id="kepuv" controls playsinline preload="metadata" crossorigin="anonymous"></video>
+  </div>
+</div>
 <div class="chmodal" id="chmodal" style="display:none">
   <div class="chm-in">
     <button class="chm-x" id="chm-x" aria-label="Close">✕</button>
@@ -1003,6 +1015,7 @@ function reviewWord(p){
     +((OB[p.a]||OB[p.b])?'<div class=\"obl\">'+t.oracle+'</div>':'')
     +'<div class=\"bd\">'+body+'</div>'
     +(e?'<div class=\"lore\"><span class=\"lk\">'+t.lore+'</span>'+e.x[lang]+'</div>':'')+'</div>';
+  q('sh-b').innerHTML+=kepuBtn(p.w);wireKepu(q('sh-b'));
   q('sh-x').textContent=t.close;
   q('sheet').style.display='flex';}
 function drawColl(){var g=q('coll');g.innerHTML='';
@@ -1115,10 +1128,11 @@ function finish(win){
       +'<div class="bd">'+body+'</div>'
       +(e?'<div class="lore"><span class="lk">'+t.lore+'</span>'+e.x[lang]+'</div>':'')
       +'<div class="share">字 '+head+'<br>'+tries.join('')+'</div></div>'
-    +'<div class="acts">'+(last?'':'<button class="btn" id="nx">'+t.next+'</button>')
+    +kepuBtn(p.w)+'<div class="acts">'+(last?'':'<button class="btn" id="nx">'+t.next+'</button>')
       +'<button class="btn ghost" id="sh">'+t.share+'</button></div>';
   q('puzzle').style.display='none';q('reveal').style.display='block';
   flashShake(win);
+  wireKepu(q('reveal'));
   if(win){play('chime');setTimeout(function(){play('stamp');},320);setTimeout(function(){play('scroll');},780);}
   else{play('wrong');setTimeout(function(){play('stamp');},320);}
   q('sh').onclick=function(){copy('墨 INK\n'+(lang==='es'?p.q.es:p.q.en)+' → '+p.w+'\n'+tries.join('')+sealTag()+'\n'+location.href);};
@@ -1231,6 +1245,20 @@ function initRelic(idx){
       g.position.y=Math.sin(t*.001)*.05;r.render(scene,cam);}
     requestAnimationFrame(loop);
   }).catch(function(){var b=q('relicbox');if(b)b.style.display='none';});}
+var KEPU={
+'森':{f:'kepu-03',t:{en:'▶ The tree meme is true',zh:'▶ 木林森，是真的',ja:'▶ 木林森は本当だった',es:'▶ El meme del árbol es real'}},
+'忘':{f:'kepu-05',t:{en:'▶ Same parts, different word',zh:'▶ 同样的零件，不同的字',ja:'▶ 同じ部品、違う字',es:'▶ Mismas piezas, otra palabra'}}};
+function openKepu(w){var k=KEPU[w];if(!k)return;
+  var v=q('kepuv');
+  v.innerHTML='<track kind="subtitles" srclang="en" label="EN/中" src="'+k.f+'.vtt" default>';
+  v.src=k.f+'.mp4';
+  q('vidmodal').style.display='flex';
+  var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}
+function closeKepu(){var v=q('kepuv');try{v.pause();v.removeAttribute('src');v.load();}catch(e){}
+  q('vidmodal').style.display='none';}
+function kepuBtn(w){return KEPU[w]?'<button class="btn ghost kepub" data-w="'+w+'">'+KEPU[w].t[lang]+'</button>':'';}
+function wireKepu(root){[].forEach.call((root||document).querySelectorAll('.kepub'),function(b){
+  b.onclick=function(){openKepu(b.getAttribute('data-w'));};});}
 function allShare(){var a=modeAll(),g='';a.forEach(function(x,i){g+='🟩';if((i+1)%7===0&&i+1<a.length)g+='\n';});
   copy('墨 INK\n'+(MODE==='char'?t.mchar:t.mword)+' '+a.length+'/'+a.length+'\n'+g+sealTag()+'\n'+location.href);}
 function closeChModal(){q('chmodal').style.display='none';disposeRelic();}
@@ -1281,6 +1309,8 @@ if(q('relicbtn'))q('relicbtn').onclick=function(){
   if(k<0)for(var i=0;i<CH.length;i++)if(chDone(i)){k=i;break;}
   fillRelicModal(k<0?0:k,false);};
 if(q('chm-x'))q('chm-x').onclick=closeChModal;
+if(q('vid-x'))q('vid-x').onclick=closeKepu;
+if(q('vidmodal'))q('vidmodal').onclick=function(e){if(e.target===this)closeKepu();};
 if(q('chmodal'))q('chmodal').onclick=function(e){if(e.target===this)closeChModal();};
 q('help').onclick=rules;
 if(q('snd')){q('snd').onclick=function(){SND=!SND;try{localStorage.setItem('hz-snd',SND?'1':'0');}catch(e){}updSnd();if(SND)play('tile');};updSnd();}
